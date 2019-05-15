@@ -16,47 +16,8 @@ class App extends React.Component{
   constructor(){
     super();
     this.state={
-      houses:[],
-      searchfield: ''
+      products:[],
     }
-  }
-  
-  updateSearch = (e) =>{
-    const searchvalue = e.target.value;
-    this.setState({searchfield: searchvalue})
-}
-
-  submitRequest = (e) =>{
-    e.preventDefault()
-    this.fetchHouses(this.state.searchfield).then(houseArr=>this.parseData(houseArr)).then(houses=>{
-      this.setState({houses})
-      })
-  }  
-
-
-  fetchHouses = (searchParams='') =>{
-     console.log(searchParams)
-     return fetch(url)
-    .then(res=>res.json())
-    .then(data=>data.results)
-  }
-
-  parseData = (houseArr) => {
-      return houseArr.map((house)=>{
-      let { title , id, beds, category:{label}, description, 
-      image_url, location:{display_name}, postcode, price_per_month} = house;
-      return{
-        title,
-        display_name,
-        id,
-        description,
-        image_url,
-        postcode,
-        price_per_month,
-        beds,
-        label,
-      }
-    })
   }
 
 
