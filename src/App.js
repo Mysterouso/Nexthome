@@ -2,99 +2,58 @@ import React from 'react';
 
 import Navigation from './Components/Navigation/Navigation'
 import Viewbox from './Components/Viewbox/Viewbox'
+import Products from './Components/Products/Products'
 
 
 import './App.css';
 
-const API_ID = process.env.REACT_APP_API_ID
-const API_KEY = process.env.REACT_APP_API_KEY
-let url='https://cors-anywhere.herokuapp.com/'
-url+= `api.adzuna.com/v1/api/property/gb/search/1?app_id=${API_ID}&app_key=${API_KEY}&where=london&category=to-rent&results_per_page=20&content-type=application/json`
 
 class App extends React.Component{
 
   constructor(){
     super();
     this.state={
-<<<<<<< HEAD
       products:[],
+      searchField:""
     }
   }
-=======
-      houses:[],
-      searchfield: '',
-      checkBuy: '',
-      checkRent: ''
-    }
-  }
-  
-  updateSearch = (e) =>{
-    const searchvalue = e.target.value;
-    this.setState({searchfield: searchvalue})
-}
 
-  submitRequest = (e) =>{ 
-    // componentDidMount(){
+
+  updateSearch = (e) => {
+    this.setState({searchField:e.target.value})
+  }
+    
+  fetchSearch = (e) => {
+
     e.preventDefault()
-    this.fetchHouses(this.state.searchfield).then(houseArr=>this.parseData(houseArr)).then(houses=>{
-      this.setState({houses})
-      })
-  }  
+    let fields = `age_ratings,alternative_names,artworks,category,collection,cover.*,created_at,dlcs,expansions,external_games,first_release_date,follows,franchise,franchises,game_engines,game_modes,genres,hypes,involved_companies,keywords,multiplayer_modes,name,parent_game,platforms,player_perspectives,popularity,pulse_count,rating,rating_count,release_dates,screenshots.*,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,time_to_beat,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites;`;
 
-
-  fetchHouses = (searchParams='') =>{
-     return fetch(url)
-    .then(res=>res.json())
-    .then(data=>data.results)
-  }
-
-  parseData = (houseArr) => {
-      console.log(houseArr)
-      return houseArr.map((house)=>{
-      let { title , id, beds, category:{label}, description, 
-      image_url, location:{display_name}, postcode, price_per_month} = house;
-      return{
-        title,
-        display_name,
-        id,
-        description,
-        image_url,
-        postcode,
-        price_per_month,
-        beds,
-        label,
+    const url= "https://cors-anywhere.herokuapp.com/" + "api-v3.igdb.com/games"
+    fetch(url,{
+      method:'POST',
+      body: `search "${this.state.searchField}"; fields ${fields} limit 25;`,
+      headers: {
+        'user-key': process.env.REACT_APP_API_KEY
       }
     })
+    .then(res=>res.json())
+    .then(products => {
+      this.setState({products});
+  })
+  .catch(err => {
+      console.error(err);
+  });
+ 
+  
   }
->>>>>>> Possibly-scrapped
-
 
   render(){
-  console.log(this.state.houses[0])
   return (
     <div className="App">
-      <Navigation/>
-      <Viewbox houses={this.state.houses} searchfield={this.state.searchfield}
-      updateSearch={this.updateSearch} submitRequest={this.submitRequest}>
-          {this.state.houses.length ? (<div className="property">
-          <div className="property-top">
-            <div className="property-image">
-              
-              <h1>{this.state.houses[0].display_name}</h1>
-              <img src={this.state.houses[0].image_url} alt={this.state.houses[0].title}/>
-              <small>{this.state.houses[0].title}</small>
-              <p>{this.state.houses[0].description}</p>
-            </div>
-            <div className="property-description">
-              <h1>{this.state.houses[0].price_per_month}</h1>
-            </div>
-          </div>
-          <div className="property-bottom"></div>
-       </div>): <div>No bueno</div>}
-     
-    
+      <Navigation />
+      <Viewbox searchField={this.state.searchField} updateSearch={this.updateSearch} fetchSearch={this.fetchSearch} >
+       { this.state.products.length ? <Products items={this.state.products}/> : '' }
       </Viewbox>
-
   
     </div>
   );

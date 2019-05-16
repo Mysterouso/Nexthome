@@ -31,17 +31,48 @@
     transform: rotate(360deg);
   }
 }
+.text-expand{
+  color:rgba(1,1,150,0.4);
+  font-weight:bold;
+  transition: all 0.2s linear;
+}
+.text-expand:hover{
+  /* color:rgb(1, 1, 36); */
+  color:rgba(1,1,150,0.8);
+}
+.text-expand-active{
+  color:rgba(1,1,150,0.8);
+}
 
-.property{
+.product{
   width:80%;
   margin:0 auto;
   border-top: solid 2px rgba(0,0,0,0.125);
   border-bottom: solid 2px rgba(0,0,0,0.125);
 }
-.property-top{
+.product:first-of-type{
+  border-top:2px solid red;
+}
+.product-image{
+  display:flex;
+  justify-content:space-around;
+  align-items:flex-start;
+}
+.product-image img{
+  /* align-self: flex-start; */
+  /* margin-top:8px; */
+  padding: 0 1rem;
+}
+.product-image p{
+  padding: 0 1rem;
+  margin:0;
+  text-align:left;
+}
+
+/* .property-top{
   display:flex;
   justify-content: space-between;
-}
+} */
 /* .property-image{
   align-self:flex-start;
   height:400px;

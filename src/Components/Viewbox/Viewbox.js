@@ -6,7 +6,7 @@ class Viewbox extends React.Component {
     
    
     render(){
-    const { searchfield,updateSearch,submitRequest } = this.props
+    const { searchField,updateSearch,fetchSearch } = this.props
     return (
         <div className="main">
             <div className="options">
@@ -16,9 +16,9 @@ class Viewbox extends React.Component {
                 <div className="searchbox">
                     <div className="searchbox-container">
                         <Checkbox/>
-                        <input onChange={updateSearch} type="text" value={searchfield} placeholder="Enter your location"/>
+                        <input onChange={updateSearch} type="text" value={searchField} placeholder="Enter your location"/>
                     </div>
-                    <input onClick={submitRequest} type="submit" />
+                    <input onClick={fetchSearch} type="submit" />
                 </div>
                 {this.props.children}
             </div>
