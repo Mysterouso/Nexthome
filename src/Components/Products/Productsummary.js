@@ -4,20 +4,20 @@ const Productsummary = ({ summary }) => {
 
     const [isExpanded,expandText] = React.useState(false)
 
+    summary = typeof summary === 'string' ? summary : null
+
     const shortenSummary = (summary,length) =>{
-        if(typeof summary !== undefined){
-            try{
-            let test = summary.slice(length,length+30)
-            let regex =  /[\s\S]\b/g
-            let findIt = test.search(regex) + length + 1
-            return summary.slice(0,findIt)
-            }
-            catch(err){
-                console.log('FROM Productsummary: ',err)
-                return <p>No summary available</p>
-            }
+        if(summary){
+                let test = summary.slice(length,length+30)
+                let regex =  /[\s\S]\b/g
+                let findIt = test.search(regex) + length + 1
+                return summary.slice(0,findIt)
+        }
+        else{
+            return "No summary available"
         }
     }
+    
     const handleText = (e) => {
         e.target.classList.toggle('text-expand-active');
         expandText((prevState)=>!prevState)

@@ -47,12 +47,10 @@
 .product{
   width:80%;
   margin:0 auto;
-  border-top: solid 2px rgba(0,0,0,0.125);
+  /* border-top: solid 2px rgba(0,0,0,0.125); */
   border-bottom: solid 2px rgba(0,0,0,0.125);
 }
-.product:first-of-type{
-  border-top:2px solid red;
-}
+
 .product-image{
   display:flex;
   justify-content:space-around;
