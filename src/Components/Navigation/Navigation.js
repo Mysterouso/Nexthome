@@ -1,6 +1,6 @@
 import React from 'react';
 import './Navigation.css'
-import { BrowserRouter as Router, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 
 const Navigation = () => {
@@ -8,7 +8,6 @@ const Navigation = () => {
         <div className="nav">
             <h1 className="nav-brand">NextHome</h1>
             <ul className="nav-list">
-            <Router>
                 <NavLink to='/'>
                     <li className="nav-item">Home</li>
                 </NavLink>
@@ -18,7 +17,6 @@ const Navigation = () => {
                 <NavLink to='/login'>
                     <li className="nav-item">Login</li>
                 </NavLink>
-            </Router>
             </ul>
         </div>
     )

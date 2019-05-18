@@ -1,9 +1,9 @@
 import React from 'react';
 import Productsummary from './Productsummary'
+import { Link } from 'react-router-dom'
+import { changeImageSize } from '../../Utils/Util'
 
 const Products  = ({ items }) => {
-    
-    const regex = /_[\S]+(?=\/)/g // Image size can be configured by url - Resizing the image
 
     const parsedItems = items.filter(entry=>entry.hasOwnProperty('cover') && entry.hasOwnProperty('name'))
     
@@ -11,13 +11,15 @@ const Products  = ({ items }) => {
       <React.Fragment>
       {parsedItems.map((item,i) =>{ 
         const { id, name, summary, total_rating, total_rating_count,
-          cover:{url}, first_release_date} = item;
+          cover:{url}, first_release_date, slug} = item;
         
-        const resizedImage = url.replace(regex,'_logo_med') || <h3>No image available</h3>
+        const resizedImage = changeImageSize(url,'_logo_med') || <h3>No image available</h3>
         return(
           <div key={id} className="product">
             <div className="product-top">
-              <h2>{name}</h2>
+              <Link to={`/${slug}`}>
+               <h2>{name}</h2>
+              </Link>
               <div className="product-image">
                 <img src={resizedImage} alt={id}/>
                 <Productsummary summary={summary}/>
@@ -30,6 +32,7 @@ const Products  = ({ items }) => {
               </div>
             </div>
         </div>
+
          )}
       )
     }
