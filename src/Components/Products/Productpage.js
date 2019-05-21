@@ -11,6 +11,7 @@ class Productpage extends React.Component{
             isLoading:true
         }
     }
+   
 
     componentDidMount(){
         // const { getProduct, productData, match } = this.props
@@ -29,13 +30,15 @@ class Productpage extends React.Component{
         // }
         // else if(productData[0].hasOwnProperty('name')){
         //     this.setState({product:productData[0],...defaultStateChange})
-        // } Temporary 
+        // } 
+        
+        // Temporary 
         const newState = {
-            name:'Battlefield',
+            name:'Battlefield V',
             id:24,
-            summary:'The world go bad',
-            rating:85,
-            rating_count:25,
+            summary:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            total_rating:85,
+            total_rating_count:25,
         }
 
         this.setState({product:newState,isLoading:false,validItem:true})
@@ -47,7 +50,7 @@ class Productpage extends React.Component{
         <div>
            { this.state.isLoading ? <h1>Loading</h1> : this.state.validItem ? (
             <React.Fragment>
-                <Productinfo info={this.state.product}/>
+                <Productinfo slug={this.props.match.params.slug} info={this.state.product}/>
             </React.Fragment>
             ) :  <h1>ERROR PAGE NOT FOUND</h1>
             }

@@ -4,8 +4,45 @@ const cors = require('cors')
 
 const app = express()
 
+app.use(express.json())
+
+app.use(cors())
+
+const differentTime = () =>  new Date();
+const differentTime1 = () => new Date();
+
+
+const fakeComments = [
+    {
+        name:"hi",
+        date: new Date(),
+        comment:"Makes no sense"
+    },
+    {
+        name:"bye",
+        date: new Date(),
+        comment:"Peacefully kept"
+    },
+    {
+        name:"hoho",
+        date:new Date(),
+        comment:"Brigading the last of us"
+    }
+
+]
+
+
+
+
 app.get('/', (req,res)=>{
-    fetch('https://amazon.co.uk').then(item=>console.log(item)).catch(err=>console.log('Error',err))
+    res.status(200).send('hi')
 })
 
-app.listen(5000,()=>console.log('Started express server'))
+app.post('/comments',(req,res)=>{
+    res.status(200).json(fakeComments)
+    
+})
+
+
+
+app.listen(5000,()=>console.log('Listening on port 5000'))

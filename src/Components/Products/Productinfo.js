@@ -1,15 +1,18 @@
 import React from 'react';
+import Commentbox from './Commentbox/Commentbox'
 import { changeImageSize } from '../../Utils/Util'
 import './Productinfo.css'
 
-const Productinfo = ({info}) =>{
+const Productinfo = ({ info, slug }) =>{
 
     // const resizedImage = changeImageSize(info.cover.url,'_720p')
     const resizedImage1 = 'https://images.igdb.com/igdb/image/upload/t_720p/vkdea0wwyn0zx8fjs1kt.jpg'
     setTimeout(()=>{
         document.documentElement.style
-    .setProperty('--loading-bar', '100%');
-    },3000)
+    .setProperty('--loading-bar', '85%');
+    },800)
+
+    console.log(slug)
     
 
     return(
@@ -23,10 +26,7 @@ const Productinfo = ({info}) =>{
                     <div className="info-text">
                         <h1>{info.name}</h1>
                         <p>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                        {info.summary/*  */}
                         </p>
                         <div className="info-text-side">
                             <p>Made by Company</p>
@@ -35,14 +35,18 @@ const Productinfo = ({info}) =>{
                     </div>
                 </div>  
             </div>
-            <div className="info-bar-container">
+            <div className="info-bar-container"> {/* Remember to put conditional here for if rating exists */}
                 <div className="info-bar">
                     <h4>
-                        <span>85/100</span>
-                        {/* <small>From 10 reviews</small>         */}
+                        <span>{Math.round(info.total_rating)} / 100</span>
                     </h4>
                 </div>
+                <small>From {info.total_rating_count} reviews</small>            
             </div>
+            <div className="info-bar-review">
+                <h2>Own the game? Why not share your thoughts below?</h2>
+                <Commentbox slug={slug} comments="insert comments here"/>
+            </div>  
         </div>
     )
 }
