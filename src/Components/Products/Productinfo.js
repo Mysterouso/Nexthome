@@ -1,12 +1,12 @@
 import React from 'react';
 import Commentbox from './Commentbox/Commentbox'
-import { changeImageSize } from '../../Utils/Util'
+import { changeImageSize,dateInMonthYear } from '../../Utils/Util'
 import './Productinfo.css'
 
 const Productinfo = ({ info, slug }) =>{
 
-    // const resizedImage = changeImageSize(info.cover.url,'_720p')
-    const resizedImage1 = 'https://images.igdb.com/igdb/image/upload/t_720p/vkdea0wwyn0zx8fjs1kt.jpg'
+    const resizedImage = changeImageSize(info.cover.url,'_720p')
+    // const resizedImage1 = 'https://images.igdb.com/igdb/image/upload/t_720p/vkdea0wwyn0zx8fjs1kt.jpg' --TESTING VARIABLE
     setTimeout(()=>{
         document.documentElement.style
     .setProperty('--loading-bar', '85%');
@@ -21,7 +21,7 @@ const Productinfo = ({ info, slug }) =>{
             <div className="info-">
                 <div className="info-container">
                     <div className="info-image">
-                        <img src={resizedImage1} alt="hi"/>
+                        <img src={resizedImage} alt="hi"/>
                     </div>
                     <div className="info-text">
                         <h1>{info.name}</h1>
@@ -30,7 +30,7 @@ const Productinfo = ({ info, slug }) =>{
                         </p>
                         <div className="info-text-side">
                             <p>Made by Company</p>
-                            <p>Released:2017</p>
+                            <p>Released: {dateInMonthYear(info.first_release_date)}</p>
                         </div>
                     </div>
                 </div>  

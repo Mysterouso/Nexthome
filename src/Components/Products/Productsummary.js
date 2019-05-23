@@ -29,7 +29,9 @@ const Productsummary = ({ summary }) => {
     return(
         <p>
             {isExpanded ? summary : shortenedSummary}
-            <span className="text-expand" onClick={handleText}>{isExpanded ? ' Show less' : ' ... Show more'}</span>
+           
+            <span className="text-expand" onClick={handleText}>{isExpanded ? ' Show less' : ' ... Show more'}</span>) : <span></span>
+            
         </p>
     )
 }

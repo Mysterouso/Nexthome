@@ -1,19 +1,21 @@
 import React,{ useState } from 'react'
 
-const Comment = ({comment}) => {
+const Comment = ({commentInfo}) => {
 
-    comment.date = new Date(comment.date);
-    let date = comment.date.toLocaleDateString()
-    let time = comment.date.toLocaleTimeString([],{hour: '2-digit', minute:'2-digit'})
+    commentInfo.date = new Date(commentInfo.date);
+    let date = commentInfo.date.toLocaleDateString()
+    let time = commentInfo.date.toLocaleTimeString([],{hour: '2-digit', minute:'2-digit'})
+
+    const { name, comment } = commentInfo;
 
     return(
             <div className="commentbox-comment">
-                <div>
-                    <h5>{comment.name}</h5>
+                <div >
+                    <h5>{name}</h5>
                     <small>{date}</small>
                     <small>{time}</small>
                 </div>
-                <p>{comment.comment}</p>
+                <p>{comment}</p>
                 
             </div>
     )
