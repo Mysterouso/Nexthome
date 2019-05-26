@@ -5,6 +5,7 @@ import Navigation from './Components/Navigation/Navigation'
 import Viewbox from './Components/Viewbox/Viewbox'
 import Products from './Components/Products/Products'
 import Productpage from './Components/Products/Productpage'
+import Loginpage from './Components/Login/Loginpage'
 
 import { Route,Switch } from "react-router-dom";
 
@@ -88,27 +89,31 @@ class App extends React.Component{
   return (
     <div className="App">
       {/* <button onClick={(e)=>this.getProduct(e,"ratchet-clank-going-commando").then(item=>console.log(item))}>getProduct here</button> */}
-      <Navigation />
+      
         <Switch>
-        <Route exact path="/" render={ () =>{
-          return(
-          <Viewbox searchField={this.state.searchField} updateSearch={this.updateSearch} fetchSearch={this.fetchSearch} >
-            <Errorboundary>
-              { this.state.products.length ? <Products items={this.state.products}/> : '' }
-            </Errorboundary>
-          </Viewbox>
-          )}
-        }
-        />
-        <Route path="/search" component={Home}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/:slug" render={({ match })=>{
-              return <Productpage match={match}
-                      productData={this.filterProductBySlug(this.state.products,match.params.slug)}
-                      getProduct={this.getProduct}
-                      /> 
-                }
-              }/>
+          <Route path="/login" component={Loginpage}/>
+          <Route path="/home" render={ () =>{
+            return(
+            <Navigation>
+              <Viewbox searchField={this.state.searchField} updateSearch={this.updateSearch} fetchSearch={this.fetchSearch} >
+                <Errorboundary>
+                  { this.state.products.length ? <Products items={this.state.products}/> : '' }
+                </Errorboundary>
+              </Viewbox>
+            </Navigation>
+            )}
+          }
+          />
+          <Route path="/search" component={Home}/>
+          <Route path="/:slug" render={({ match })=>{
+                return (<Navigation>
+                          <Productpage match={match}
+                          productData={this.filterProductBySlug(this.state.products,match.params.slug)}
+                          getProduct={this.getProduct}
+                          />
+                        </Navigation>)
+                  }
+                }/>
         </Switch>
     </div>
   );

@@ -1,16 +1,11 @@
 const express = require('express')
 const fetch = require('node-fetch')
 const cors = require('cors')
+const bcrypt = require('bcrypt');
+const db = require('./db')
 
-require('dotenv').config()
 
-const { Pool } = require('pg')
-const connectionString = process.env.DEVELOPMENT_URI
-
-const pool = new Pool({
-  connectionString: connectionString,
-})
-
+const saltRounds = 10;
 
 
 const app = express()
@@ -33,31 +28,11 @@ var corsOptions = {
 }
 
 
-
-const fakeComments = [
-    {
-        name:"hi",
-        date: new Date(),
-        comment:"Makes no sense"
-    },
-    {
-        name:"bye",
-        date: new Date(),
-        comment:"Peacefully kept"
-    },
-    {
-        name:"hoho",
-        date:new Date(),
-        comment:"Brigading the last of us"
-    }
-
-]
-
 const getCommentsQuery = "SELECT comment_id,slug,comment,date,user_details.name FROM user_comments INNER JOIN user_details on user_id = id WHERE slug = $1 ORDER BY DATE DESC;"
 
 
 const getComments = (parameters,query=getCommentsQuery) => {
-  return pool.query(query,parameters)
+  return db.query(query,parameters)
   .then(res=>res.rows)
   .catch(err=>console.log("Error",err))
 }
@@ -65,6 +40,46 @@ const getComments = (parameters,query=getCommentsQuery) => {
 app.get('/', (req,res)=>{
     console.log(req.headers)
     res.status(200).send('hi')
+})
+
+app.post('/signin',(req,res)=>{
+  
+  const { email,password } = req.body
+
+  const findEmailQuery = "SELECT * FROM user_details WHERE email = $1;"
+  const parameters = [email]
+
+  getComments(parameters,findEmailQuery)
+  .then(rows=>bcrypt.compare(password,rows[0].password))
+  .then(isValid=>{
+    if(isValid){
+      return getComments(parameters,findEmailQuery)
+    }
+    else{
+      return res.status(400).json('Invalid username or password')
+    }
+  })
+  .then(item=>res.json(item[0]))
+
+  
+})
+
+app.post('/register',(req,res)=>{
+
+  const { name,email,password } = req.body
+
+  if(!name|!email|!password)  return res.status(400).json("Invalid form submission");
+  
+  const newUserQuery = "INSERT INTO user_details(name,email,password,created_at) VALUES ($1,$2,$3,$4) RETURNING *;";
+  
+
+  bcrypt.hash(password,saltRounds)
+  .then(hash =>{
+    const parameters = [ name, email, hash, new Date()]
+    return getComments(parameters,newUserQuery)
+  })
+  .then(item=>res.json(item))
+
 })
 
 app.get('/comments/:slug',(req,res)=>{

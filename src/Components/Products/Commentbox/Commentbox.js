@@ -62,7 +62,7 @@ class Commentbox extends React.Component{
                     </form>
             </div>
             <div className="commentbox-comment-container">
-                {this.state.isLoaded ? this.state.users.map(user=><Comment key={user.comment_id}  commentInfo={user}/>) : <div>Loading</div>}
+                {this.state.isLoaded ? this.state.users.map(user=><Comment key={user.comment_id}  commentInfo={user}/>) : <div className="Loading">Loading</div>}
             </div>
         </div>
     )

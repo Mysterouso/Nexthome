@@ -11,10 +11,18 @@ const Productsummary = ({ summary }) => {
                 let test = summary.slice(length,length+30)
                 let regex =  /[\s\S]\b/g
                 let findIt = test.search(regex) + length + 1
-                return summary.slice(0,findIt)
+                if(summary.length>240){
+                return (<span>
+                        <span>{isExpanded ? summary : summary.slice(0,findIt)}</span>
+                        <span className="text-expand" onClick={handleText}>{isExpanded ? ' Show less' : ' ... Show more'}</span>
+                        </span>)
+                }
+                else{
+                    return <span>{summary}</span>
+                }
         }
         else{
-            return "No summary available"
+            return <span>No summary available</span>
         }
     }
     
@@ -23,14 +31,16 @@ const Productsummary = ({ summary }) => {
         expandText((prevState)=>!prevState)
     }
 
-    const shortenedSummary = shortenSummary(summary,140)
+    const shortenedSummary= shortenSummary(summary,240)
 
 
     return(
         <p>
-            {isExpanded ? summary : shortenedSummary}
+            {shortenedSummary}
+            {/* Previous iteration below in case of bugs  */}
+            {/* {isExpanded ? summary : shortenedSummary} */}
            
-            <span className="text-expand" onClick={handleText}>{isExpanded ? ' Show less' : ' ... Show more'}</span>) : <span></span>
+            {/* <span className="text-expand" onClick={handleText}>{isExpanded ? ' Show less' : ' ... Show more'}</span> */}
             
         </p>
     )

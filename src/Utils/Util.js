@@ -7,3 +7,12 @@ export const changeImageSize = (arr,string,search=regex) => {
 }
 
 export const dateInMonthYear = (unixDate) => new Date(unixDate*1000).toLocaleDateString([],{year:'numeric',month:'long'})
+
+export const fetchServer = (path,body,method) =>{
+     return fetch(`http://localhost:5000${path}`,{
+                method,
+                body:body,
+                headers: { "Content-Type": "application/json" }                    
+                })
+                .then(resp=>resp.json())
+}

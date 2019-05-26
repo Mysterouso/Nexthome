@@ -3,8 +3,9 @@ import './Navigation.css'
 import { NavLink } from "react-router-dom";
 
 
-const Navigation = () => {
+const Navigation = ({children}) => {
     return(
+    <React.Fragment>
         <div className="nav">
             <h1 className="nav-brand">NextHome</h1>
             <ul className="nav-list">
@@ -19,6 +20,8 @@ const Navigation = () => {
                 </NavLink>
             </ul>
         </div>
+        {children}
+    </React.Fragment>
     )
 }
 
