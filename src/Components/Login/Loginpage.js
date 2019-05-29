@@ -1,5 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { Usercontext } from '../../Context/Usercontext'
+
 import Loginpageform from './Loginpageform'
 
 import { fetchServer } from '../../Utils/Util';
@@ -35,9 +37,13 @@ class Loginpage extends React.Component{
     handleSubmit = (e) =>{
         //Still need to handle when email is already in the database
         e.preventDefault()
+
         this.setState({error:initialErrorState})
+
         let body;
         let path;
+        const { user,updateUser, redirectLogin} = this.context;
+
         if(this.state.isLogin){
             body = JSON.stringify({
                 email:this.state.email,
@@ -68,7 +74,10 @@ class Loginpage extends React.Component{
             path='/register'
         }
         fetchServer(path,body,'POST')
-        .then(res=>console.log(res))
+        .then(res=>{updateUser(res.user);return res})
+        .then(resp=>console.log(resp))
+        .then(item=>redirectLogin(true))
+        .catch(err=>console.log(err))
         
     }
 
@@ -179,7 +188,9 @@ class Loginpage extends React.Component{
                     </div>
               </div>)
     }
-
 }
+
+Loginpage.contextType = Usercontext;
+
 
 export default Loginpage;

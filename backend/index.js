@@ -3,21 +3,15 @@ const fetch = require('node-fetch')
 const cors = require('cors')
 const bcrypt = require('bcrypt');
 const db = require('./db')
+const jwt = require('jsonwebtoken')
+const session = require ('express-session')
+const pgSession = require('connect-pg-simple')(session)
+const commentRouter = require('./Routes/Comments')
 
-
-const saltRounds = 10;
-
-
-const app = express()
-
-app.use(cors())
-
-
-app.use(express.urlencoded({extended:false}))
-app.use(express.json())
 
 var whitelist = ['http://localhost:3000']
 var corsOptions = {
+  credentials:true,
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
@@ -27,80 +21,158 @@ var corsOptions = {
   }
 }
 
+const saltRounds = 10;
 
-const getCommentsQuery = "SELECT comment_id,slug,comment,date,user_details.name FROM user_comments INNER JOIN user_details on user_id = id WHERE slug = $1 ORDER BY DATE DESC;"
+
+const app = express()
+
+//Middlewares
+app.use(cors(corsOptions))
+// app.use(express.urlencoded({extended:false}))
+app.use(express.json())
+
+/
+app.use(session({
+  store: new pgSession({
+   pool:db.pool
+  }),
+  secret: process.env.REACT_JWT_TOKEN,
+  cookie:{
+    maxAge:(1000 * 60 * 60 * 2),
+    secure: false,
+    httpOnly: true},
+  resave: true,
+  saveUninitialized: false,
+  rolling: true
+}))
+
+// Routes
+app.use('/comments',commentRouter);
 
 
-const getComments = (parameters,query=getCommentsQuery) => {
-  return db.query(query,parameters)
-  .then(res=>res.rows)
-  .catch(err=>console.log("Error",err))
-}
+app.get('/session',(req,res)=>{
+  
+  if(!req.session.user) return res.json({isLoggedIn:false});
+
+  const findEmailQuery = "SELECT * FROM user_details WHERE id = $1;";
+
+  db.makeQuery([req.session.user.id],findEmailQuery)
+  .then(item=>{ 
+      res.json({
+        isLoggedIn:true,
+        user:{
+          id:item[0].id, 
+          name:item[0].name, 
+          email:item[0].email
+        }
+      });
+  })
+})
+
+app.get('/logout',(req,res)=>{
+  
+  req.session.destroy((err)=>{
+    if(err){
+      console.log(err);
+      return res.json({loggedOut:false});
+    }
+    res.json({loggedOut:true})
+  })
+
+})
 
 app.get('/', (req,res)=>{
-    console.log(req.headers)
-    res.status(200).send('hi')
+  req.session.id="This is from session"
+  console.log('This is what we\'re dealing with ',req.session)
+  res.status(200).json("Do you work?")
 })
 
 app.post('/signin',(req,res)=>{
   
-  const { email,password } = req.body
+  const { email,password } = req.body;
+  const findEmailQuery = "SELECT * FROM user_details WHERE email = $1;";
+  const parameters = [email];
 
-  const findEmailQuery = "SELECT * FROM user_details WHERE email = $1;"
-  const parameters = [email]
+  if(!email|!password)  return res.status(400).json("Invalid form submission");
+  
+  if(!req.session.user) req.session.user = {};
 
-  getComments(parameters,findEmailQuery)
+  db.makeQuery(parameters,findEmailQuery)
+  .then(data=>{
+    if(data.length===0) return res.json('Email or password is invalid');
+    return data;
+  })
   .then(rows=>bcrypt.compare(password,rows[0].password))
   .then(isValid=>{
     if(isValid){
-      return getComments(parameters,findEmailQuery)
+      return db.makeQuery(parameters,findEmailQuery)
     }
     else{
       return res.status(400).json('Invalid username or password')
     }
   })
-  .then(item=>res.json(item[0]))
+  .then(item=>{
+    req.session.user.id=item[0].id; 
+    res.json({
+      user:{
+        id:item[0].id, 
+        name:item[0].name, 
+        email:item[0].email
+      }
+    });
+  })
 
-  
+ 
 })
 
 app.post('/register',(req,res)=>{
 
   const { name,email,password } = req.body
+  const newUserQuery = "INSERT INTO user_details(name,email,password,created_at) VALUES ($1,$2,$3,$4) RETURNING *;";
 
   if(!name|!email|!password)  return res.status(400).json("Invalid form submission");
   
-  const newUserQuery = "INSERT INTO user_details(name,email,password,created_at) VALUES ($1,$2,$3,$4) RETURNING *;";
+  req.session.user = {}
   
-
   bcrypt.hash(password,saltRounds)
-  .then(hash =>{
-    const parameters = [ name, email, hash, new Date()]
-    return getComments(parameters,newUserQuery)
+  .then(hash => db.makeQuery([ name, email, hash, new Date()], newUserQuery))
+  .then(item=>{
+    req.session.user.id=item[0].id; 
+    res.json({
+      user:{
+        id:item[0].id, 
+        name:item[0].name, 
+        email:item[0].email
+      }
+    });
   })
-  .then(item=>res.json(item))
 
 })
-
-app.get('/comments/:slug',(req,res)=>{
-  
-  const parameters = [req.params.slug]
-  
-  getComments(parameters)
-  .then(resp=>res.json(resp))
-
-})
-
-app.post('/comments', (req,res)=>{
-
-    const { slug, comment} = req.body;
-    const createCommentQuery = "WITH COMMENT AS (INSERT INTO user_comments(user_id,slug,comment,date) VALUES (3,$1,$2,$3) RETURNING *) SELECT comment_id,slug,comment,date,user_details.name FROM COMMENT INNER JOIN user_details on id=user_id;";
-    const parameters = [slug,comment, new Date()]
-   
-    getComments(parameters,createCommentQuery)
-    .then(resp=>res.json(resp))
-})
-
 
 
 app.listen(5000,()=>console.log('Listening on port 5000'))
+
+
+ // .then(item=>{
+  //   jwt.sign({
+  //     data:{id:item[0].id}
+  //   },
+  //     process.env.REACT_JWT_TOKEN,
+  //     { expiresIn: '6h' },
+  //     (err,token)=>{
+  //       if(err) res.json(err);
+  //       res.json({ token, user:{id:item[0].id, name:item[0].name, email:item[0].email}})
+  //       }
+  //   );
+  // })
+
+
+
+
+
+
+
+
+
+
+

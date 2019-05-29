@@ -17,7 +17,7 @@ const Products  = ({ items }) => {
         return(
           <div key={id} className="product">
             <div className="product-top">
-              <Link to={`/${slug}`}>
+              <Link to={`/games/${slug}`}>
                <h2>{name}</h2>
               </Link>
               <div className="product-image">
@@ -25,7 +25,7 @@ const Products  = ({ items }) => {
                 <Productsummary summary={summary}/>
               </div>
               { total_rating ? (
-                <small> Rated {total_rating.toFixed(1)} from {total_rating_count} reviews</small>):<small>No reviews available</small>
+                <small> Rated {total_rating.toFixed(1)} from {total_rating_count} reviews</small>) : <small>No reviews available</small>
                 }
               <div className="product-description">
                 <h4>Released:{Math.floor(1970 + first_release_date/(24*60*60*365))}</h4> {/* Parsing unicode date */}

@@ -8,11 +8,21 @@ export const changeImageSize = (arr,string,search=regex) => {
 
 export const dateInMonthYear = (unixDate) => new Date(unixDate*1000).toLocaleDateString([],{year:'numeric',month:'long'})
 
-export const fetchServer = (path,body,method) =>{
-     return fetch(`http://localhost:5000${path}`,{
-                method,
-                body:body,
-                headers: { "Content-Type": "application/json" }                    
-                })
+export const fetchServer = (path,body,method) => {
+
+    const fetchOptions = {
+                            method,
+                            credentials:'include',
+                            headers: { "Content-Type": "application/json" }                    
+                            }
+    if(body) fetchOptions.body = body
+
+     return fetch(`http://localhost:5000${path}`,fetchOptions)
                 .then(resp=>resp.json())
 }
+
+export const defaultUser = {
+    id: 3,
+    email: '',
+    name: ''
+  }

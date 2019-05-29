@@ -1,5 +1,7 @@
 import React from 'react'
 import Comment from './Comment'
+import { Usercontext } from '../../../Context/Usercontext'
+
 
 class Commentbox extends React.Component{
 
@@ -28,8 +30,11 @@ class Commentbox extends React.Component{
 
     handleComment = e => {
         e.preventDefault()
-        const {comment,users} = this.state
-        const newComment = {comment,slug:this.props.slug}
+        
+        const { user } = this.context;
+        const {comment,users} = this.state;
+
+        const newComment = {userID:user.id,comment,slug:this.props.slug}
        
 
         fetch('http://localhost:5000/comments',{
@@ -67,7 +72,9 @@ class Commentbox extends React.Component{
         </div>
     )
     }
-
 }
+
+Commentbox.contextType = Usercontext;
+
 
 export default Commentbox;

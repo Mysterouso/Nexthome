@@ -9,7 +9,7 @@ const Productinfo = ({ info, slug }) =>{
     // const resizedImage1 = 'https://images.igdb.com/igdb/image/upload/t_720p/vkdea0wwyn0zx8fjs1kt.jpg' --TESTING VARIABLE
     setTimeout(()=>{
         document.documentElement.style
-    .setProperty('--loading-bar', Math.round(info.total_rating) + '');
+    .setProperty('--loading-bar', `${Math.round(info.total_rating)}%`);
     },800)
 
     console.log(slug)

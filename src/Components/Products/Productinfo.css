@@ -198,6 +198,7 @@ body{
 }
 .commentbox-comment small{
     font-weight:bold;
+    font-size:0.8rem;
     margin:4px;
 }
 .commentbox-comment small:first-of-type{
