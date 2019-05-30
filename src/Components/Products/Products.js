@@ -3,6 +3,8 @@ import Productsummary from './Productsummary'
 import { Link } from 'react-router-dom'
 import { changeImageSize } from '../../Utils/Util'
 
+import './Products.css'
+
 const Products  = ({ items }) => {
 
     const parsedItems = items.filter(entry=>entry.hasOwnProperty('cover') && entry.hasOwnProperty('name'))

@@ -13,8 +13,8 @@ const Productsummary = ({ summary }) => {
                 let findIt = test.search(regex) + length + 1
                 if(summary.length>240){
                 return (<span>
-                        <span>{isExpanded ? summary : summary.slice(0,findIt)}</span>
-                        <span className="text-expand" onClick={handleText}>{isExpanded ? ' Show less' : ' ... Show more'}</span>
+                            <span>{isExpanded ? summary : summary.slice(0,findIt)}</span>
+                            <span className="text-expand" onClick={handleText}>{isExpanded ? ' Show less' : ' ... Show more'}</span>
                         </span>)
                 }
                 else{

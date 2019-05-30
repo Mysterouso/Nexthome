@@ -20,48 +20,5 @@
   color:rgba(1,1,150,0.8);
 }
 
-.product{
-  width:80%;
-  margin:0 auto;
-  text-align:center;
-  /* border-top: solid 2px rgba(0,0,0,0.125); */
-  border-bottom: solid 2px rgba(0,0,0,0.125);
-}
-
-.product-image{
-  display:flex;
-  justify-content:space-around;
-  align-items:flex-start;
-}
-.product-image img{
-  /* align-self: flex-start; */
-  /* margin-top:8px; */
-  padding: 0 1rem;
-}
-.product-image p{
-  padding: 0 1rem;
-  margin:0;
-  text-align:left;
-}
-
-/* .property-top{
-  display:flex;
-  justify-content: space-between;
-} */
-/* .property-image{
-  align-self:flex-start;
-  height:400px;
-  width:500px;
-}
-.property-image img{
-   height:100%;
-  width:100%;
-  object-fit:cover;
-}
-
-
-.property-description{
-  text-align:right;
-} */
 
 

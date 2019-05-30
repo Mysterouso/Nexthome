@@ -2,13 +2,17 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Usercontext } from '../../Context/Usercontext'
 
-import Loginpageform from './Loginpageform'
+import Loginpageinput from './Loginpageinput'
 
 import { fetchServer } from '../../Utils/Util';
 
 import './Loginpage.css';
 
 const initialErrorState = {
+    server:{
+        isError: false,
+        errorMessage:'',
+    },
     email:{
         isError: false,
         errorMessage:'',
@@ -74,8 +78,24 @@ class Loginpage extends React.Component{
             path='/register'
         }
         fetchServer(path,body,'POST')
+        .then(response=>{
+            if(response.user){ return response;}
+            else{
+                this.setState((prevState)=>{
+                    return({
+                            error:{
+                                ...prevState.error,
+                                server:{
+                                    isError:true,
+                                    errorMessage:response
+                                    }
+                                }
+                            })
+                        })
+                return Promise.reject(response);
+                }
+        })
         .then(res=>{updateUser(res.user);return res})
-        .then(resp=>console.log(resp))
         .then(item=>redirectLogin(true))
         .catch(err=>console.log(err))
         
@@ -110,10 +130,12 @@ class Loginpage extends React.Component{
 
 
     render(){
-        const {email,password} = this.state.error;
+        const {server,email,password} = this.state.error;
         
 
-        return(<div className="login-page">
+        return(
+            <div className="login-correction">
+                <div className="login-page">
                     <div className="login">
                         <div className="login-body login--active">
                         
@@ -136,46 +158,45 @@ class Loginpage extends React.Component{
 
                             
                             <form onSubmit={this.handleSubmit}>
+                               
+                                {server.isError && 
+                                    <span className="error-message">{server.errorMessage}</span>
+                                }
+
                                 
                                 {this.state.isRegister && (
-                                    <div>
-                                        <label htmlFor="name">Name</label>
-                                        <input onChange={this.handleInput} value={this.state.name} type="name" name="name"></input>
-                                    </div>
+                                     <Loginpageinput inputName="name" inputType="text" inputTitle="Name" handleInput={this.handleInput}
+                                      value={this.state.name} />
                                     )}
 
-                                <div>
-                                    <label htmlFor="email">Email</label>
-                                    <input onChange={this.handleInput} value={this.state.email} type="email" name="email"></input>
-                                    {email.isError && 
-                                    <span className="error-message">{email.errorMessage}</span>
-                                    }
-                                </div>
 
-                                <div>
-                                    <label htmlFor="password">Password</label>
-                                    <input onChange={this.handleInput} value={this.state.password} type="password" name="password"></input>
-                                    {password.isError &&
-                                    <span className="error-message">Passwords don't match</span>
-                                    }
-                                </div>
+                                <Loginpageinput inputName="email" inputType="email" inputTitle="Email" handleInput={this.handleInput}
+                                    value={this.state.email} >
+
+                                 {email.isError && <span className="error-message">{email.errorMessage}</span>}
+                                </Loginpageinput>
+                             
+                                <Loginpageinput inputName="password" inputType="password" inputTitle="Password" handleInput={this.handleInput}
+                                    value={this.state.password} >
+
+                                 {password.isError && <span className="error-message">Passwords don't match</span>}
+                                </Loginpageinput>
+                            
 
                                 {this.state.isRegister && (
-                                    <div>
-                                        <label htmlFor="repeatPassword">Confirm your password</label>
-                                        <input onChange={this.handleInput} value={this.state.repeatPassword} type="password" name="repeatPassword"></input>
-                                    </div>
+                                      <Loginpageinput inputName="repeatPassword" inputType="password" inputTitle="Confirm your password" handleInput={this.handleInput}
+                                      value={this.state.repeatPassword} />
                                     )}
 
-                                <input type="submit"></input>
+                                <input className="login-submit" type="submit" value={this.state.isLogin ? 'Login' : 'Register'}></input>
                             </form>
                             <div className="login-options">
-                                <div className="login-to-register">
+                                {/* <div className="login-to-register">
                                     <h6>Don't have an account?</h6>
                                     <Link to="/register">
                                         <h6>Register here</h6>
                                     </Link>
-                                </div>
+                                </div> */}
                                 <div className="login-to-home">
                                     <h6>Don't want an account?</h6>
                                     <Link to="/">
@@ -186,7 +207,8 @@ class Loginpage extends React.Component{
                             </div>
                         </div>
                     </div>
-              </div>)
+                </div>
+            </div>)
     }
 }
 

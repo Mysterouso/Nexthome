@@ -6,7 +6,10 @@ const db = require('./db')
 const jwt = require('jsonwebtoken')
 const session = require ('express-session')
 const pgSession = require('connect-pg-simple')(session)
+
 const commentRouter = require('./Routes/Comments')
+
+const signin = require('./Routefunctions/signin')
 
 
 var whitelist = ['http://localhost:3000']
@@ -51,9 +54,9 @@ app.use('/comments',commentRouter);
 
 
 app.get('/session',(req,res)=>{
-  
-  if(!req.session.user) return res.json({isLoggedIn:false});
 
+  if( !req.session.user || !Object.keys(req.session.user).length ) return res.json({isLoggedIn:false});
+  
   const findEmailQuery = "SELECT * FROM user_details WHERE id = $1;";
 
   db.makeQuery([req.session.user.id],findEmailQuery)
@@ -67,6 +70,7 @@ app.get('/session',(req,res)=>{
         }
       });
   })
+  
 })
 
 app.get('/logout',(req,res)=>{
@@ -87,54 +91,76 @@ app.get('/', (req,res)=>{
   res.status(200).json("Do you work?")
 })
 
-app.post('/signin',(req,res)=>{
-  
-  const { email,password } = req.body;
-  const findEmailQuery = "SELECT * FROM user_details WHERE email = $1;";
-  const parameters = [email];
+app.post('/signin',(req,res)=>signin(db,bcrypt,req,res))
 
-  if(!email|!password)  return res.status(400).json("Invalid form submission");
-  
-  if(!req.session.user) req.session.user = {};
 
-  db.makeQuery(parameters,findEmailQuery)
-  .then(data=>{
-    if(data.length===0) return res.json('Email or password is invalid');
-    return data;
-  })
-  .then(rows=>bcrypt.compare(password,rows[0].password))
-  .then(isValid=>{
-    if(isValid){
-      return db.makeQuery(parameters,findEmailQuery)
-    }
-    else{
-      return res.status(400).json('Invalid username or password')
-    }
-  })
-  .then(item=>{
-    req.session.user.id=item[0].id; 
-    res.json({
-      user:{
-        id:item[0].id, 
-        name:item[0].name, 
-        email:item[0].email
-      }
-    });
-  })
+// ,(req,res)=>{
+  
+  // const { email,password } = req.body;
+  // const findEmailQuery = "SELECT * FROM user_details WHERE email = $1;";
+  // const parameters = [email];
+
+  // if(!email|!password)  return res.json("Invalid form submission");
+  
+  // if(!req.session.user) req.session.user = {};
+
+  // db.makeQuery(parameters,findEmailQuery)
+  // .then(data=>{
+  //   if(data.length==0){
+  //      res.json('Invalid email or password')
+  //      return Promise.reject('Invalid email or password');
+  //     }
+  //   else{ 
+  //     return bcrypt.compare(password,data[0].password);
+  //   }
+  // })
+  // .then(isValid=>{
+  //   if(isValid){
+  //     return db.makeQuery(parameters,findEmailQuery)
+  //   }
+  //   else{
+  //     res.json('Invalid email or password')
+  //   }
+  // })
+  // .then(item=>{
+  //   if(item){
+  //     req.session.user.id=item[0].id; 
+  //     res.json({
+  //       user:{
+  //         id:item[0].id, 
+  //         name:item[0].name, 
+  //         email:item[0].email
+  //       }
+  //     });
+  //   } 
+  // })
+  // .catch(err=>console.log(err))
 
  
-})
+// })
 
 app.post('/register',(req,res)=>{
 
   const { name,email,password } = req.body
   const newUserQuery = "INSERT INTO user_details(name,email,password,created_at) VALUES ($1,$2,$3,$4) RETURNING *;";
+  const checkAvailableQuery = "SELECT * FROM user_details WHERE email = $1;";
+
 
   if(!name|!email|!password)  return res.status(400).json("Invalid form submission");
   
   req.session.user = {}
-  
-  bcrypt.hash(password,saltRounds)
+  //Check if email is available
+  db.makeQuery([email],checkAvailableQuery)
+  .then(data=>{
+    if(data.length>0){
+      res.json('This email is not available')
+      return Promise.reject('This email is not available');
+     }
+   else{ 
+     // If so, continue registration
+     return bcrypt.hash(password,saltRounds)
+   }
+  })  
   .then(hash => db.makeQuery([ name, email, hash, new Date()], newUserQuery))
   .then(item=>{
     req.session.user.id=item[0].id; 
@@ -146,6 +172,7 @@ app.post('/register',(req,res)=>{
       }
     });
   })
+  .catch(err=>console.log(err))
 
 })
 

@@ -55,6 +55,10 @@
 .login-body form div label{
     font-size:0.85rem;
     margin-bottom:0.5rem;
+    font-weight:600;
+    width:calc(80% + 1rem);
+    text-align:left;
+
 }
 
 .login-body form div{
@@ -68,10 +72,12 @@
     border:0;
     /* width:80%; */
     padding: 0.2rem 0.5rem;
+    border-radius:4px;
 }
 
 .error-message{
     margin-top:0.35rem;
+    margin-bottom:1rem;
     padding:0.5rem;
     color:black;
     font-weight:700;
@@ -86,7 +92,25 @@
     border: 1px solid green;
     outline:none;
 }
-
+.login-submit{
+    /* box-sizing:border-box; */
+    border:0;
+    border: 1px solid rgba(44,93,230,0.225);
+    margin-top:0.4rem;
+    padding: 0.3rem 0;
+    width:160px;
+    height:30px;
+    /* background-color:rgb(100, 240, 100); */
+    background-color:rgb(44, 93, 230);
+    cursor:pointer;
+    font-weight:800;
+    font-size:1rem;
+    border-radius: 4px;
+}
+.login-submit:hover{
+    background-color:rgba(134, 7, 39,0.6);
+    transform:scale(1.02);
+}
 
 .login-options{
     margin: 3rem 0;
@@ -153,4 +177,54 @@
     background-color:rgba(81, 144, 228);
 } */
 
+@media only screen and (max-width:420px){
+    .login{
+        width:96%;
+    }
+}
 
+@media only screen and (max-width:512px) and (min-width:420px){
+    .login{
+        width:80%;
+    }
+}
+
+@media only screen and (min-width:1440px){
+    .login{
+        min-height:80%;
+        transform:translate(-50%,-60%);
+    }
+}
+
+@media only screen and (min-width:2560px){
+    .login-page{
+        font-size:32px;
+    }
+    .login-body form{
+        padding-bottom:40px;
+    }
+    .login-body form div input:not([type="submit"]){
+        width:90%;
+    }
+    .login-body form div label{
+        font-size:1rem;
+    }
+    .login-body form div{
+        padding-bottom:30px;
+    }
+    .login{
+        height:400px;
+        width:35%;
+        transform:translate(-50%,-60%);
+    }
+    .login-body{
+        max-height:100%;
+        min-height:50%;
+        height:50%;
+    }
+    .login-divider{
+        height:15%;
+        margin-bottom:50px;
+    }
+
+}

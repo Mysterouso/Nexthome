@@ -9,9 +9,9 @@ class Viewbox extends React.Component {
     const { searchField,updateSearch,fetchSearch } = this.props
     return (
         <div className="main">
-            <div className="options">
+            {/* <div className="options">
             
-            </div>
+            </div> */}
             <div className="viewbox">
                 <div className="searchbox">
                     <div className="searchbox-container">
