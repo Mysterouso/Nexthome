@@ -19,6 +19,7 @@ class App extends React.Component{
     this.state={
       products:[],
       isLoggedIn:false,
+      showNav:true,
       searchField:"",
       user: defaultUser
     }
@@ -100,22 +101,24 @@ class App extends React.Component{
     
   }
 
+  monitorNav = (newState) => {
+    this.setState({showNav:newState})
+  }
+
 
 
     render(){
       return (
         <div className="App">
-          {/* <button onClick={(e)=>this.getProduct(e,"ratchet-clank-going-commando").then(item=>console.log(item))}>getProduct here</button> */}
-          {/* component={Loginpage} */}
-          <Usercontext.Provider value={{user:this.state.user,updateUser:this.updateUser,redirectLogin:this.redirectLogin}}>
-            {/* <Home/> */}
-            <Switch>
 
-             
+          <Usercontext.Provider value={{user:this.state.user,updateUser:this.updateUser,redirectLogin:this.redirectLogin}}>
+                              
+            {this.state.showNav && <Navigation/>}
+           
+            <Switch>
               <Route exact path="/" render={ () =>{
                 return(
                   <React.Fragment>
-                  <Navigation/>
                   <Viewbox searchField={this.state.searchField} updateSearch={this.updateSearch} fetchSearch={this.fetchSearch} >
                     <Errorboundary>
                       { this.state.products.length ? <Products items={this.state.products}/> : '' }
@@ -125,14 +128,11 @@ class App extends React.Component{
                 )}
               }
               />
-
               <Route path="/login" render={()=>(
-                this.state.isLoggedIn ? <Redirect to="/"/> : <Loginpage/>
+                this.state.isLoggedIn ? <Redirect to="/"/> : <Loginpage monitorNav={this.monitorNav}/>
               )}/>
-          
               <Route path="/games/:slug" render={({ match })=>{
                     return (<React.Fragment>
-                              <Navigation/>
                               <Productpage match={match}
                               productData={this.filterProductBySlug(this.state.products,match.params.slug)}
                               getProduct={this.getProduct}

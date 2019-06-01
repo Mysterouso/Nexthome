@@ -21,7 +21,7 @@
 .login{
     position:absolute;
     top:50%;left:50%;
-    transform:translate(-50%,-40vh);
+    transform:translate(-50%,-35vh);
     width:40%;
 }
 

@@ -30,6 +30,7 @@ const signin = (db,bcrypt,req,res) =>{
   .then(item=>{
     if(item){
       req.session.user.id=item[0].id; 
+      req.session.user.secret_id=item[0].secret_id;
       res.json({
         user:{
           id:item[0].id, 
@@ -43,4 +44,4 @@ const signin = (db,bcrypt,req,res) =>{
 }
 
 
-module.exports = signin
+module.exports = signin;

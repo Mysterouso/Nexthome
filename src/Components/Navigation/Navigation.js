@@ -2,6 +2,8 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 import { Usercontext } from '../../Context/Usercontext'
 import { fetchServer,defaultUser } from '../../Utils/Util' 
+import { withRouter } from "react-router";
+
 import './Navigation.css'
 
 
@@ -15,6 +17,7 @@ const Navigation = (props) => {
             if(resp.loggedOut){
                 redirectLogin(false);
                 updateUser(defaultUser);
+                props.history.push('/login')
             }
         })
     }
@@ -45,4 +48,4 @@ const Navigation = (props) => {
     )
 }
 
-export default Navigation;
+export default withRouter(Navigation);

@@ -15,10 +15,19 @@ export const fetchServer = (path,body,method) => {
                             credentials:'include',
                             headers: { "Content-Type": "application/json" }                    
                             }
-    if(body) fetchOptions.body = body
+    
+    if(body) fetchOptions.body = body;
 
-     return fetch(`http://localhost:5000${path}`,fetchOptions)
-                .then(resp=>resp.json())
+    if(method==="DELETE"){
+        return fetch(`http://localhost:5000${path}`,fetchOptions)
+    } 
+    else{
+
+        return fetch(`http://localhost:5000${path}`,fetchOptions)
+                   .then(resp=>resp.json())
+    }
+
+
 }
 
 export const defaultUser = {

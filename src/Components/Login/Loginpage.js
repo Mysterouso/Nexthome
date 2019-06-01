@@ -38,6 +38,13 @@ class Loginpage extends React.Component{
         }
     }
 
+    componentDidMount(){
+        this.props.monitorNav(false);
+    }
+    componentWillUnmount(){
+        this.props.monitorNav(true);
+    }
+
     handleSubmit = (e) =>{
         //Still need to handle when email is already in the database
         e.preventDefault()

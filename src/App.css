@@ -2,6 +2,9 @@
 :root{
   --loading-bar:0%;
 }
+/* html, body {
+  overflow-x:hidden;
+} */
 
 *{
   font-family: 'Montserrat', sans-serif;
@@ -20,5 +23,13 @@
   color:rgba(1,1,150,0.8);
 }
 
+/* @media only screen and (max-width:570px){
+  html{
+    width:100vw;
+  }
+  body{
+    width:100%;
+  }
 
+} */
 

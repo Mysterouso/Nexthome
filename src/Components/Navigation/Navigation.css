@@ -22,9 +22,23 @@
 }
 
 .nav-item{
-    margin: 0 20px;
+    margin: 0 1.25rem;
 }
 
-.nav-item a{
+.nav-list a{
     text-decoration:none;
 }
+
+@media only screen and (max-width:768px){
+  .nav{
+      padding: 0 10px 4px;
+  }
+  .nav-item{
+      margin: 0 0.5rem;
+  }
+}
+/* * {
+    background: #000 !important;
+    color: #0f0 !important;
+    outline: solid #f00 1px !important;
+  } */

@@ -1,7 +1,8 @@
 import React from 'react'
 import Comment from './Comment'
-import { Usercontext } from '../../../Context/Usercontext'
+import { Usercontext } from '../../../Context/Usercontext';
 
+import { fetchServer } from '../../../Utils/Util';
 
 class Commentbox extends React.Component{
 
@@ -15,12 +16,6 @@ class Commentbox extends React.Component{
     }
 
     componentDidMount(){
-        // fetch('http://localhost:5000/comments',{
-        //     method:'POST',
-        //     headers: { "Content-Type": "application/json" },
-        //     body:JSON.stringify({slug:this.props.slug})
-        // }
-        // In consideration - Using GET instead of POST
 
         fetch(`http://localhost:5000/comments/${this.props.slug}`)
         .then(res=>res.json())
@@ -55,6 +50,12 @@ class Commentbox extends React.Component{
         this.setState({comment:e.target.value})
     }
 
+    removeComment = (comment_id) => {
+        this.setState(prevState=>{
+            return {users: prevState.users.filter(user=> user.comment_id != comment_id)}
+        })
+    }
+
     render(){
 
 
@@ -67,7 +68,7 @@ class Commentbox extends React.Component{
                     </form>
             </div>
             <div className="commentbox-comment-container">
-                {this.state.isLoaded ? this.state.users.map(user=><Comment key={user.comment_id}  commentInfo={user}/>) : <div className="Loading">Loading</div>}
+                {this.state.isLoaded ? this.state.users.map(user=><Comment key={user.comment_id} removeComment={this.removeComment}  commentInfo={user}/>) : <div className="Loading">Loading</div>}
             </div>
         </div>
     )

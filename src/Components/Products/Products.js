@@ -26,6 +26,8 @@ const Products  = ({ items }) => {
                 <img src={resizedImage} alt={id}/>
                 <Productsummary summary={summary}/>
               </div>
+            </div>
+            <div className="product-bottom">
               { total_rating ? (
                 <small> Rated {total_rating.toFixed(1)} from {total_rating_count} reviews</small>) : <small>No reviews available</small>
                 }
