@@ -166,7 +166,8 @@
     padding-top:0;
     margin-top:-1rem;
 }
-.commentbox-form{
+.commentbox-form,
+.commentbox-comment-form{
     /* box-shadow: 0px 0px 1px 0px black; */
     width:80%;
     background-color:#f5f5f5;
@@ -187,6 +188,23 @@
     border:2px solid rgba(34,34,34,0.5);
     border-bottom:none;
     margin:0 auto;
+    position:relative;
+}
+.commentbox-comment-editbox{
+    transform-origin:top;
+    opacity:0;
+    transition: all 0.4s ease-out;
+}
+
+.commentbox-comment-form{
+    width:86%;
+    padding-left:1.5rem;
+    padding-bottom:1rem;
+    border-top:2px solid black;
+    border-bottom:2px solid black;  
+}
+.commentbox-comment-editbox-active{
+    opacity:1;
 }
 .commentbox-comment:last-child{
     border-bottom: 2px solid rgba(34,34,34,0.5);
@@ -196,48 +214,63 @@
     display:flex;
     justify-content:space-between;
 }
-.commentbox-comment-top div{
+.commentbox-comment-info{
     width:30%;
     box-sizing:border-box;
     padding: 0.5rem 0.3rem;
     border-radius:4px;
     background-color: rgb(81, 144, 228);
 }
-.commentbox-comment-top span{
+.commentbox-comment-update{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+}
+.commentbox-comment-edit{
+    display:block;
+    /* background-color:black; */
+    width:20px;
+    height:20px;
+    margin-left:2px;
+    margin-top:4px;
+}
+.commentbox-comment-edit:hover{
+    color:rgb(81, 144, 228);
+}
+.commentbox-comment-delete{
     position:relative;
     width:20px;
     height:20px;
-    background:transparent;
+    /* background:transparent; */
+    display:block;
     z-index:2;
     cursor:pointer;
 }
-.commentbox-comment-top span::before,
-.commentbox-comment-top span::after{
+.commentbox-comment-delete::before,
+.commentbox-comment-delete::after{
     content:'';
     position:absolute;
-    top:0px;bottom:0px;
+    top:0.5px;bottom:0.5px;left:7.5px;right:7.50px;
+    /* transform:translate(-5px,0); */
     display:block;
     width:5px;
     background-color:rgba(200,100,100);
     transform-origin: center;
     transition: all 0.5s ease-in;
 }
-.commentbox-comment-top span::before{
+.commentbox-comment-delete::before{
     transform:rotate(315deg);
 }
-.commentbox-comment-top span::after{
+.commentbox-comment-delete::after{
     transform:rotate(45deg);
 }
-.commentbox-comment-top span:hover::before{
+.commentbox-comment-delete:hover::before{
     transform:rotate(450deg);
 }
-.commentbox-comment-top span:hover::after{
+.commentbox-comment-delete:hover::after{
     transform:rotate(-90deg);
 }
-
-
-
-
 .commentbox-comment h5{
     margin:0;
 }
@@ -258,18 +291,20 @@
     font-weight:800;
     margin-left:1rem;
 }
-
-
-.commentbox-form textarea{
+.commentbox-form textarea,
+.commentbox-comment-form textarea{
     resize:none;
     padding: 0.5rem;
     font-weight:800;
     color:black;
+    border: 1px solid rgba(34,34,34,0.3);
 }
-.commentbox-form textarea:focus{
+.commentbox-form textarea:focus,
+.commentbox-comment-form textarea:focus{
     border:1px solid green;
 }
-.commentbox-form input{
+.commentbox-form input,
+.commentbox-comment-form input{
     outline:none;
     margin:0.5rem;
     width:140px;
@@ -282,9 +317,54 @@
     font-weight:700;
     font-size:1rem;
 }
-.commentbox-form input:hover{
+.commentbox-form input:hover,
+.commentbox-comment-form input:hover{
     background-color:green;
     color:white;
+}
+
+@media only screen and (max-width:425px){
+    .info-container{
+        flex-direction:column;
+        align-items:center;
+        margin:0;
+        width:100vw;
+    }
+    .info-image{
+        /* margin:0 auto; */
+        margin-top:-60px;
+    }
+    .commentbox-container{
+        width:100%;
+    }
+    .commentbox-form{
+        width:86%;
+        flex-direction:column;
+        padding: 1em;
+    }
+    .commentbox-form textarea{
+       width:88%; 
+    }
+    .commentbox-form input{
+        width:88%;
+        margin-top:1em;
+    }
+    .info-bar{
+        width:80%;
+    }
+    .info-text{
+        width:80%;
+    }
+    .commentbox-comment{
+        padding-left:10px
+    }
+    .commentbox-comment-info{
+        width:60%;
+    }
+    .commentbox-comment-top div span{
+        margin-top:6px;
+    }
+
 }
 
 

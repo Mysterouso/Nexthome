@@ -20,7 +20,7 @@
 }
 
 .product-image p{
-  padding: 0 1rem;
+  padding: 0 1rem 0 0.5rem;
   margin:0;
   text-align:left;
 }
@@ -36,3 +36,25 @@
   margin-top:0.8rem;
 } */
 
+@media only screen and (max-width:425px){
+  .product{
+    width:100%;
+  }
+  .product-top a h2{
+    font-size:1.2em;
+  }
+  .product-image{
+      display:initial;
+  }
+  .product-image p{
+      float:none;
+  }
+  .product-image p span{
+      float:inherit;
+      word-wrap:break-word;
+  }
+  .product-image img{
+      float:left;
+      padding: 0 0.45em 0 1em;
+  }
+}

@@ -28,17 +28,17 @@ const Navigation = (props) => {
         <div className="nav">
             <h1 className="nav-brand">NextHome</h1>
             <ul className="nav-list">
-                    <li className="nav-item">Welcome {user.name ? user.name : ''} </li>
-                <NavLink to='/'>
-                    <li className="nav-item">Home</li>
+                    <li className="nav-item greeting">Welcome {user.name ? user.name : ''} </li>
+                <NavLink className="nav-link" to='/'>
+                    <li className="nav-item two">Home</li>
                 </NavLink>
                 { user.name ? (
-                    <NavLink onClick={handleLogout} to='/login'>
+                    <NavLink className="nav-link" onClick={handleLogout} to='/login'>
                     <li className="nav-item">Logout</li>
                     </NavLink>
                     )  :  (
-                    <NavLink to='/login'>
-                        <li className="nav-item">Login</li>
+                    <NavLink className="nav-link" to='/login'>
+                        <li className="nav-item three">Login</li>
                     </NavLink>
                     )
                 }

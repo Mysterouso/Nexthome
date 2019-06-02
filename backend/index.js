@@ -6,6 +6,7 @@ const db = require('./db')
 const session = require ('express-session')
 const pgSession = require('connect-pg-simple')(session)
 const helmet = require('helmet');
+const morgan = require('morgan');
 
 const commentRouter = require('./Routes/Comments')
 

@@ -72,6 +72,9 @@
 .checkbox-container span{
     position:absolute;
     box-sizing:border-box;
+
+
+
     text-align:center;
     font-size:1.25rem;
     color:white;
@@ -85,6 +88,12 @@
     border-top-left-radius: 20px;
     border:4px solid black;
     border-bottom:none; */
+}
+
+@media only screen and (max-width:425px){
+    .viewbox{
+        width:96%;
+    }
 }
 
 

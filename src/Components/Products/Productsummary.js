@@ -3,6 +3,7 @@ import React from 'react';
 const Productsummary = ({ summary }) => {
 
     const [isExpanded,expandText] = React.useState(false)
+    const [expandClass,updateClass] = React.useState('')
 
     summary = typeof summary === 'string' ? summary : null
 
@@ -14,7 +15,7 @@ const Productsummary = ({ summary }) => {
                 if(summary.length>240){
                 return (<span>
                             <span>{isExpanded ? summary : summary.slice(0,findIt)}</span>
-                            <span className="text-expand" onClick={handleText}>{isExpanded ? ' Show less' : ' ... Show more'}</span>
+                            <span className={"text-expand "+expandClass} onClick={handleText}>{isExpanded ? ' Show less' : ' ... Show more'}</span>
                         </span>)
                 }
                 else{
@@ -27,7 +28,8 @@ const Productsummary = ({ summary }) => {
     }
     
     const handleText = (e) => {
-        e.target.classList.toggle('text-expand-active');
+        // e.target.classList.toggle('text-expand-active');
+        updateClass(()=> expandClass === '' ? 'text-expand-active' : '')
         expandText((prevState)=>!prevState)
     }
 

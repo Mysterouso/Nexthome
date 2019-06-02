@@ -55,8 +55,32 @@ cApp.delete('/:comment_id',(req,res)=>{
     }
   })
   .then(response=>{res.status(204).send()})
+})
 
-  
+cApp.patch('/:comment_id',(req,res)=>{
+  const comment_id = req.params.comment_id;
+  const { comment } = req.body;
+  const { id, secret_id } = req.session.user;
+
+  const checkMatchQuery = "SELECT * FROM user_comments INNER JOIN user_details on user_id = id WHERE comment_id = $1 ORDER BY DATE DESC;"
+  const parameters = [comment_id]
+  const updateCommentQuery = "UPDATE user_comments SET comment = $1 WHERE comment_id = $2;"
+  const updateParameters = [comment,comment_id]
+
+  db.makeQuery(parameters,checkMatchQuery)
+  .then(data=>{
+    if(data[0].id===id && data[0].secret_id===secret_id){
+      //Delete comment here
+      return db.makeQuery(updateParameters,updateCommentQuery)
+    } 
+    else{
+      res.status(401).send()
+      return Promise.reject('Unauthorized')
+    }
+  })
+
+
+
 })
 
 
