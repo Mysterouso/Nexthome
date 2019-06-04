@@ -47,7 +47,7 @@ app.use(session({
   saveUninitialized: false,
   rolling: true
 }))
-
+app.use(morgan('combined'));
 // Routes
 app.use('/comments',commentRouter);
 

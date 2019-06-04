@@ -14,25 +14,88 @@
 .nav-brand{
     margin:0;
 }
+.nav-menu,
 .nav-list{
     margin:0;
     padding:0;
     display:flex;
-    justify-content:flex-start;;
+    justify-content:flex-start;
     align-items:center;
     list-style:none;
+    position:relative;
+    transition: all 4s ease-in;
+
 }
+.nav-list{
+    transition: all 4s ease-in;
+   
+}
+.nav-menu .nav-hide .nav-menu{
+    flex-direction: row-reverse;
+}
+.nav-menu .nav-hide .nav-list{
+    transform:translate(300%);
+}
+
+/* .greeting:hover ~ .nav-list::before{
+    border-left:8px solid #222;
+}
+.greeting:hover ~ .nav-list::after{
+    border-right:8px solid #222;
+} */
+/* .nav-list::before,
+.nav-list::after, */
+.greeting::after{
+    content:'';
+    box-sizing:border-box;
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    height:16px;
+    width:16px;
+    /* border-top: 8px solid blue;
+    border-right: 8px solid red;
+    border-bottom: 8px solid green; */
+    border:8px solid transparent;
+    border-right: 8px solid white;
+}
+/* .nav-list::after{
+    right:-6px;
+}
+.nav-list::before{
+    left:-6px;
+    border:8px solid transparent;
+    border-left: 8px solid white; 
+} */
 
 .nav-link{
     margin: 0 0.5em;
     color:white;
+    position:relative;
 }
 .nav-link:hover .nav-item{
     color:#222;
 }
 .greeting{
-    margin-right:2rem;
+    margin-right:1rem;
+    font-weight:500;
+    position:relative;
+    cursor:pointer;
 }
+
+.greeting:hover{
+    color:#222;
+}
+.greeting:hover::after{
+    border-left: 8px solid #222;     
+}
+
+.greeting::after{
+    right:-22px;
+    border:8px solid transparent;
+    border-left: 8px solid white; 
+}
+
 
 .nav-list a{
     text-decoration:none;

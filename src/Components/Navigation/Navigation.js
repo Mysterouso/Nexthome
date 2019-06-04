@@ -26,23 +26,25 @@ const Navigation = (props) => {
     return(
     <React.Fragment>
         <div className="nav">
-            <h1 className="nav-brand">NextHome</h1>
-            <ul className="nav-list">
-                    <li className="nav-item greeting">Welcome {user.name ? user.name : ''} </li>
-                <NavLink className="nav-link" to='/'>
-                    <li className="nav-item two">Home</li>
-                </NavLink>
-                { user.name ? (
-                    <NavLink className="nav-link" onClick={handleLogout} to='/login'>
-                    <li className="nav-item">Logout</li>
+            <h1 className="nav-brand">NextGame</h1>
+            <div className="nav-menu">
+                <h4 className="nav-item greeting">Welcome {user.name ? user.name : ''} </h4>
+                <ul className="nav-list">
+                    <NavLink className="nav-link" to='/'>
+                        <li className="nav-item two">Home</li>
                     </NavLink>
-                    )  :  (
-                    <NavLink className="nav-link" to='/login'>
-                        <li className="nav-item three">Login</li>
-                    </NavLink>
-                    )
-                }
-            </ul>
+                    { user.name ? (
+                        <NavLink className="nav-link" onClick={handleLogout} to='/login'>
+                        <li className="nav-item">Logout</li>
+                        </NavLink>
+                        )  :  (
+                        <NavLink className="nav-link" to='/login'>
+                            <li className="nav-item three">Login</li>
+                        </NavLink>
+                        )
+                    }
+                </ul>
+            </div>
         </div>
     </React.Fragment>
     )

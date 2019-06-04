@@ -10,7 +10,7 @@ const Comment = (props) => {
 
     const { user } = React.useContext(Usercontext);
 
-    const {commentInfo,removeComment} = props
+    const {commentInfo,updateComment} = props
 
     commentInfo.date = new Date(commentInfo.date);
     let date = commentInfo.date.toLocaleDateString()
@@ -19,7 +19,7 @@ const Comment = (props) => {
     const deleteComment = (e) =>{
         fetchServer(`/comments/${commentInfo.comment_id}`,null,'DELETE')
         .then(resp=>{
-            if(resp.status==204)removeComment(commentInfo.comment_id)
+            if(resp.status==204)updateComment(commentInfo.comment_id)
             else{
                 //Need to put a prompt on failed deletion
                 return
@@ -35,7 +35,24 @@ const Comment = (props) => {
 
 
     const editComment = (e) => {
-        fetchServer(`/comments/${commentInfo.comment_id}`,{body:{comment:'PLACEHOLDER TEXT'}},'PATCH')
+        
+        e.preventDefault()
+        const editDate = new Date()
+        const body = JSON.stringify({comment:editText,date:editDate})
+
+        fetchServer(`/comments/${commentInfo.comment_id}`,body,'PATCH',false)
+        .then(resp=>{
+            if(resp.status==204) updateComment(commentInfo.comment_id,editText,editDate)
+            else{
+                //Need to put a prompt on failed deletion
+                return
+            }
+        })
+        .then(noresponse=>{
+            updateClass()
+            updateEditText('')
+            }
+        )   
     }
 
     const handleText = (e) => {
@@ -43,7 +60,7 @@ const Comment = (props) => {
     }
 
 
-
+    
 
     let canChangeComment = user.id == commentInfo.id && user.id !== 3
 
@@ -57,6 +74,7 @@ const Comment = (props) => {
                             <h5>{name}</h5>
                             <small>{date}</small>
                             <small>{time}</small>
+                            {commentInfo.edited && <small>*</small>}
                         </div>
                         
                         { canChangeComment && (
@@ -74,7 +92,7 @@ const Comment = (props) => {
                 </div>
                 { canChangeComment && isEditVisible && (
                     <div className={"commentbox-comment-editbox " + editFormClass}>
-                        <form className="commentbox-comment-form" /*onSubmit={this.handleComment}*/>
+                        <form className="commentbox-comment-form" onSubmit={editComment}>
                             <textarea rows="5" cols="50" value={editText} onChange={handleText} minLength="6" required ></textarea>
                             <input  type="submit" value="Edit comment"></input>
                         </form>

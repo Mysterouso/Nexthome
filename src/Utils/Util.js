@@ -8,7 +8,7 @@ export const changeImageSize = (arr,string,search=regex) => {
 
 export const dateInMonthYear = (unixDate) => new Date(unixDate*1000).toLocaleDateString([],{year:'numeric',month:'long'})
 
-export const fetchServer = (path,body,method) => {
+export const fetchServer = (path,body,method,isJson) => {
 
     const fetchOptions = {
                             method,
@@ -18,7 +18,7 @@ export const fetchServer = (path,body,method) => {
     
     if(body) fetchOptions.body = body;
 
-    if(method==="DELETE"){
+    if(method==="DELETE" || isJson === false){
         return fetch(`http://localhost:5000${path}`,fetchOptions)
     } 
     else{

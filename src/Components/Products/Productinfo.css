@@ -178,6 +178,9 @@
     justify-content:center;
     align-items:center;
 }
+.commentbox-form{
+    width:90%;
+}
 .commentbox-comment{
     width:86%;
     min-height:125px;
@@ -200,8 +203,9 @@
     width:86%;
     padding-left:1.5rem;
     padding-bottom:1rem;
-    border-top:2px solid black;
-    border-bottom:2px solid black;  
+    border-top:1px solid rgba(34,34,34,0.25);
+    border-bottom:0;
+     
 }
 .commentbox-comment-editbox-active{
     opacity:1;
@@ -223,7 +227,7 @@
 }
 .commentbox-comment-update{
     display:flex;
-    flex-direction:column;
+    flex-direction:row-reverse;
     justify-content:flex-start;
     align-items:flex-start;
 }
@@ -233,7 +237,7 @@
     width:20px;
     height:20px;
     margin-left:2px;
-    margin-top:4px;
+    margin-right:4px;
 }
 .commentbox-comment-edit:hover{
     color:rgb(81, 144, 228);
@@ -337,8 +341,12 @@
     .commentbox-container{
         width:100%;
     }
+    .commentbox-textfield-container{
+        width:100%;
+    }
     .commentbox-form{
-        width:86%;
+        width:100%;
+        box-sizing:border-box;
         flex-direction:column;
         padding: 1em;
     }
@@ -346,7 +354,7 @@
        width:88%; 
     }
     .commentbox-form input{
-        width:88%;
+        width:60%;
         margin-top:1em;
     }
     .info-bar{
@@ -355,8 +363,18 @@
     .info-text{
         width:80%;
     }
-    .commentbox-comment{
-        padding-left:10px
+    .commentbox-comment,
+    .commentbox-comment-form{
+        width:90%;
+        padding-left:10px;
+        padding-right:10px;
+    }
+    .commentbox-comment-form{
+        flex-direction:column;
+    }
+    .commentbox-comment-form textarea{
+        width:90%;
+        margin-bottom:6px;
     }
     .commentbox-comment-info{
         width:60%;
@@ -364,7 +382,16 @@
     .commentbox-comment-top div span{
         margin-top:6px;
     }
-
+}
+@media only screen and (max-width:320px){
+    .commentbox-form,
+    .commentbox-comment,
+    .commentbox-comment-form{
+        width:96%;
+        box-sizing:border-box;
+        /* padding-left:10px;
+        padding-right:10px; */
+    }
 }
 
 

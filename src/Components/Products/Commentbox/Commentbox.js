@@ -50,10 +50,21 @@ class Commentbox extends React.Component{
         this.setState({comment:e.target.value})
     }
 
-    removeComment = (comment_id) => {
-        this.setState(prevState=>{
-            return {users: prevState.users.filter(user=> user.comment_id != comment_id)}
-        })
+    updateComment = (comment_id,comment, date) => {
+        if(comment===null){
+            this.setState(prevState=>{
+                return {users: prevState.users.filter(user=> user.comment_id != comment_id)}
+            })
+        }
+        else{
+            this.setState(prevState=>{
+                const editIndex = prevState.users.findIndex(user => user.comment_id === comment_id)
+                const omittedArr = prevState.users.filter(user=> user.comment_id != comment_id)
+                return { users: 
+                            [{...prevState.users[editIndex],comment,date},...omittedArr]
+                         }
+            })
+        }
     }
 
     render(){
@@ -68,7 +79,7 @@ class Commentbox extends React.Component{
                     </form>
             </div>
             <div className="commentbox-comment-container">
-                {this.state.isLoaded ? this.state.users.map(user=><Comment key={user.comment_id} removeComment={this.removeComment}  commentInfo={user}/>) : <div className="Loading">Loading</div>}
+                {this.state.isLoaded ? this.state.users.map(user=><Comment key={user.comment_id} updateComment={this.updateComment}  commentInfo={user}/>) : <div className="Loading">Loading</div>}
             </div>
         </div>
     )
