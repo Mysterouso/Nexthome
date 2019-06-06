@@ -8,6 +8,8 @@ const pgSession = require('connect-pg-simple')(session)
 const helmet = require('helmet');
 const morgan = require('morgan');
 
+const createSchema = require('./schema')
+
 const commentRouter = require('./Routes/Comments')
 
 const signin = require('./Routefunctions/signin')
@@ -16,7 +18,6 @@ const register = require('./Routefunctions/register')
 const { fields, url } = require('./Constants/API');
 const corsOptions= require('./Constants/Corsconfig');
 const sessionConfig = require('./Constants/Sessionconfig');
-
 
 const app = express()
 
@@ -87,10 +88,11 @@ app.get('/logout',(req,res)=>{
   })
 
 })
-
-
   
-app.listen(5000,()=>console.log('Listening on port 5000'))
+app.listen(5000,()=>{
+  console.log('Listening on port 5000')
+  createSchema().catch(e=>console.error(e.stack))
+})
 
 
 
