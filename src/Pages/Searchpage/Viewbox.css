@@ -1,4 +1,21 @@
 
+.main-container{
+    min-height:calc(100vh - 46px);
+    width:100vw;
+    /* background: #0F2027; 
+    background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027); 
+    background: linear-gradient(to right, #2C5364, #203A43, #0F2027); */
+    background-color: rgba(134,9,39,0.30);
+
+
+    /* background: rgb(2,0,36);
+    background: radial-gradient(circle, rgba(2,0,36,1) 0%,rgba(134,7,39,0.8) 25%,rgb(81,144,228) 50%, rgba(144,81,228,1) 80%); */
+    /* rgb(81,144,228) */
+    /* rgba(9,9,121,1)  */
+    /* background: linear-gradient(to top,rgba(81, 144, 228), rgba(34,34,34,0.8) 90%); */
+    /* rgba(134,7,39,0.15) */              
+}
+
 .main{
     display:flex;
     justify-content:center;
@@ -14,29 +31,56 @@
     box-shadow: 0px 0px 2px;
 } */
 .viewbox{
-    width: 70%;
+    width: 86%;
     margin: 2rem auto 0;
     background-color: whitesmoke;
-    border: solid 2px rgba(120,120,120,0.12);
-    box-shadow: 0px 0px 2px;
+    margin-bottom:1rem;
+
+    /* border: solid 2px rgbas(120,120,120,0.12); */
+    /* box-shadow: 0px 0px 2px rgba(134,7,39,0.2); */
 }
 .searchbox{
-    width:60%;
+    width:70%;
     margin:1rem auto 0;
     display:flex;
-    align-items:flex-end;
+    align-items:center;
     justify-content: center;
+    box-sizing:border-box;
 }
+.searchbox-search,
+.searchbox-submit{
+    border:1px solid rgba(34,34,34,0.125);
+    border-radius:4px;
+}
+.searchbox-search:focus{
+    border: 1px solid rgba(0, 128, 0, 0.3);
+    outline:none;
+}
+
+.searchbox-submit{
+   margin-left:0.8rem;
+   background-color:rgb(81,144,228);
+   height:28px;
+   padding:2px;
+   width:15%;
+}
+
+.searchbox-submit:hover{
+    background-color:green;
+    color:white;
+}
+
 .searchbox-container{
     display:flex;
     flex-direction:column;
     justify-content: center;
     justify-items: center;
-    width:100%;
+    width:60%;
+    height:32px;
 }
 .searchbox-container > input {
-    height:28px;
-    font:arial;
+    height:100%;
+    font-family: 'Montserrat',sans-serif;
     font-size:1.2rem;
     padding-left:1rem;
 }

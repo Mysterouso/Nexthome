@@ -1,6 +1,6 @@
 .nav{
     box-sizing:border-box;
-    padding: 4px 20px 4px;
+    padding: 4px 20px 50px;
     width:100%;
     margin:0;
     height:46px;
@@ -73,22 +73,27 @@
     color:white;
     position:relative;
 }
-.nav-link:hover .nav-item{
+.nav-link:hover .nav-item,
+.nav-link-active{
     color:#222;
+    font-weight:800;
 }
+
 .greeting{
     margin-right:1rem;
     font-weight:500;
     position:relative;
-    cursor:pointer;
+    /* cursor:pointer; */
 }
 
-.greeting:hover{
-    color:#222;
-}
-.greeting:hover::after{
-    border-left: 8px solid #222;     
-}
+/* .greeting:hover{
+    color:rgb(81,144,228);
+    #222;
+} */
+/* .greeting:hover::after{
+    border-left: 8px solid rgb(81,144,228);
+    #222;     
+} */
 
 .greeting::after{
     right:-22px;

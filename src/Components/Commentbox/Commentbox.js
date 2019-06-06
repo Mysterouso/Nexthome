@@ -1,8 +1,6 @@
 import React from 'react'
 import Comment from './Comment'
-import { Usercontext } from '../../../Context/Usercontext';
-
-import { fetchServer } from '../../../Utils/Util';
+import { Usercontext } from '../../Context/Usercontext';
 
 class Commentbox extends React.Component{
 
@@ -19,7 +17,7 @@ class Commentbox extends React.Component{
 
         fetch(`http://localhost:5000/comments/${this.props.slug}`)
         .then(res=>res.json())
-        .then(comments=>{console.log(comments);this.setState({users:[...comments],isLoaded:true})})
+        .then(comments=>this.setState({users:[...comments],isLoaded:true}))
         .catch(err=>console.log(err))
     }
 
@@ -51,7 +49,7 @@ class Commentbox extends React.Component{
     }
 
     updateComment = (comment_id,comment, date) => {
-        if(comment===null){
+        if(!comment){
             this.setState(prevState=>{
                 return {users: prevState.users.filter(user=> user.comment_id != comment_id)}
             })

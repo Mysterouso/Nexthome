@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Usercontext } from '../../Context/Usercontext'
 
 import Loginpageinput from './Loginpageinput'
@@ -10,10 +10,6 @@ import './Loginpage.css';
 
 const initialErrorState = {
     server:{
-        isError: false,
-        errorMessage:'',
-    },
-    email:{
         isError: false,
         errorMessage:'',
     },
@@ -46,14 +42,11 @@ class Loginpage extends React.Component{
     }
 
     handleSubmit = (e) =>{
-        //Still need to handle when email is already in the database
         e.preventDefault()
-
         this.setState({error:initialErrorState})
-
         let body;
         let path;
-        const { user,updateUser, redirectLogin} = this.context;
+        const { shouldRefresh,updateRefresh,updateUser, redirectLogin} = this.context;
 
         if(this.state.isLogin){
             body = JSON.stringify({
@@ -102,14 +95,14 @@ class Loginpage extends React.Component{
                 return Promise.reject(response);
                 }
         })
-        .then(res=>{updateUser(res.user);return res})
+        .then(res=>{
+            updateUser(res.user);
+            if(shouldRefresh)updateRefresh(false)
+            return res
+        })
         .then(item=>redirectLogin(true))
-        .catch(err=>console.log(err))
-        
+        .catch(err=>console.log(err))  
     }
-
-
-
 
     handleInput = (e) =>{
         const {name,value} = e.target
@@ -117,11 +110,10 @@ class Loginpage extends React.Component{
     }
 
     handleCheck = (e) =>{
-        
+       
         if(!e.target.checked)return;
-        
+       
         this.setState((prevState)=>{
-            
             return{
                 email: '',
                 password: '',
@@ -134,12 +126,9 @@ class Loginpage extends React.Component{
         })
     }
 
-
-
     render(){
         const {server,email,password} = this.state.error;
         
-
         return(
             <div className="login-correction">
                 <div className="login-page">
@@ -162,8 +151,6 @@ class Loginpage extends React.Component{
                                 
                         </div>
 
-
-                            
                             <form onSubmit={this.handleSubmit}>
                                
                                 {server.isError && 
@@ -176,16 +163,11 @@ class Loginpage extends React.Component{
                                       value={this.state.name} />
                                     )}
 
-
                                 <Loginpageinput inputName="email" inputType="email" inputTitle="Email" handleInput={this.handleInput}
-                                    value={this.state.email} >
-
-                                 {email.isError && <span className="error-message">{email.errorMessage}</span>}
-                                </Loginpageinput>
-                             
+                                    value={this.state.email} />
+                        
                                 <Loginpageinput inputName="password" inputType="password" inputTitle="Password" handleInput={this.handleInput}
                                     value={this.state.password} >
-
                                  {password.isError && <span className="error-message">Passwords don't match</span>}
                                 </Loginpageinput>
                             

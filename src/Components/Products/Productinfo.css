@@ -50,7 +50,7 @@
 }
 
 .info-text{
-    width:50%;
+    width:60%;
     /* padding-top:100px; */
     padding:20px;
     color:#222;
@@ -65,6 +65,7 @@
 
 .info-text p{
     font-weight:800; 
+    line-height:1.5;
     /* min-height:140px; */
 }
 
@@ -139,7 +140,13 @@
 .info-bar-review h2{
  margin-top:0;
 }
+.info-review{
+    font-size:1.2rem;
+    text-align:center;
+    position:relative;
+    transform:translateY(-10rem);
 
+}
 .commentbox-container{
     /* border: solid 2px rgba(34,34,34,0.125); */
      /* rgba(3, 71, 160, 0.125); */

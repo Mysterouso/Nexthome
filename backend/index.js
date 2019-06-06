@@ -13,55 +13,48 @@ const commentRouter = require('./Routes/Comments')
 const signin = require('./Routefunctions/signin')
 const register = require('./Routefunctions/register')
 
+const { fields, url } = require('./Constants/API');
+const corsOptions= require('./Constants/Corsconfig');
+const sessionConfig = require('./Constants/Sessionconfig');
 
-var whitelist = ['http://localhost:3000']
-var corsOptions = {
-  credentials:true,
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
 
 const app = express()
 
 //Middlewares
 app.use(helmet())
 app.use(cors(corsOptions))
-// app.use(express.urlencoded({extended:false}))
 app.use(express.json())
-
-app.use(session({
-  store: new pgSession({
-   pool:db.pool
-  }),
-  secret: process.env.REACT_JWT_TOKEN,
-  cookie:{
-    maxAge:(1000 * 60 * 60 * 2),
-    secure: false,
-    httpOnly: true},
-  resave: true,
-  saveUninitialized: false,
-  rolling: true
+app.use(session({ 
+  store: new pgSession({pool:db.pool}),
+  ...sessionConfig
 }))
 app.use(morgan('combined'));
+
 // Routes
 app.use('/comments',commentRouter);
 
+app.post('/',(req,res)=>{
 
-app.get('/', (req,res)=>{
-  req.session.id="This is from session"
-  console.log('This is what we\'re dealing with ',req.session)
-  res.status(200).json("Do you work?")
+  let body;
+
+  if(req.body.search) body = (`search "${req.body.search}"; fields ${fields} limit 25;`);
+  else if(req.body.slug) body= `fields ${fields} where slug = "${req.body.slug}";`;
+
+  fetch(url,{
+    method:'POST',
+    body,
+    headers: {
+      'user-key': process.env.REACT_APP_API_KEY
+    }
+  })
+  .then(resp=>resp.json())
+  .then(response=>res.json(response))
+  .catch(err=>res.status(400).json(err))
 })
 
 app.post('/signin',(req,res)=>signin(db,bcrypt,req,res))
 
 app.post('/register',(req,res)=>register(db,bcrypt,req,res))
-
 
 app.get('/session',(req,res)=>{
   

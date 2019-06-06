@@ -1,5 +1,5 @@
 import React from 'react';
-import Commentbox from './Commentbox/Commentbox'
+import Commentbox from '../Commentbox/Commentbox'
 import { changeImageSize,dateInMonthYear } from '../../Utils/Util'
 import './Productinfo.css'
 
@@ -10,10 +10,7 @@ const Productinfo = ({ info, slug }) =>{
     setTimeout(()=>{
         document.documentElement.style
     .setProperty('--loading-bar', `${Math.round(info.total_rating || 100)}%`);
-    },800)
-
-    console.log(slug)
-    
+    },800)    
 
     return(
         <div className="info-page">
@@ -38,7 +35,7 @@ const Productinfo = ({ info, slug }) =>{
             <div className="info-bar-container">
                 <div className="info-bar">
                     <h4>
-                        <span>{info.total_rating ? Math.round(info.total_rating) + ' / 100' : 'No reviews available'}</span>
+                        <span>{info.total_rating ? Math.round(info.total_rating) + ' / 100' : <span className="info-review">No reviews available</span>}</span>
                     </h4>
                 </div>
                 {info.total_rating && <small>From {info.total_rating_count} reviews</small>}

@@ -9,7 +9,7 @@ import './Navigation.css'
 
 const Navigation = (props) => {
 
-    const {user,updateUser,redirectLogin} = React.useContext(Usercontext);
+    const {user,updateUser,updateRefresh,redirectLogin} = React.useContext(Usercontext);
 
     const handleLogout = (e) => {
         fetchServer('/logout',null,'GET')
@@ -17,6 +17,7 @@ const Navigation = (props) => {
             if(resp.loggedOut){
                 redirectLogin(false);
                 updateUser(defaultUser);
+                updateRefresh(true)
                 props.history.push('/login')
             }
         })
@@ -30,7 +31,7 @@ const Navigation = (props) => {
             <div className="nav-menu">
                 <h4 className="nav-item greeting">Welcome {user.name ? user.name : ''} </h4>
                 <ul className="nav-list">
-                    <NavLink className="nav-link" to='/'>
+                    <NavLink exact activeClassName="nav-link-active" className="nav-link" to='/'>
                         <li className="nav-item two">Home</li>
                     </NavLink>
                     { user.name ? (

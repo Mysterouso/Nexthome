@@ -1,35 +1,33 @@
 const express = require('express')
 const db = require('../db')
-const uuidv1 = require('uuid/v1');
+
 
 
 const cApp = express.Router()
 
 cApp.get('/:slug',(req,res)=>{
-  
     
     const commentQuery = "SELECT comment_id,slug,comment,date,edited,user_details.name,user_details.id FROM user_comments INNER JOIN user_details on user_id = id WHERE slug = $1 ORDER BY DATE DESC;"
     const parameters = [req.params.slug]
     
     db.makeQuery(parameters,commentQuery)
     .then(resp=>res.json(resp))
-  
   })
   
 cApp.post('/', (req,res)=>{
-    let uuid;
-    if(!req.body.userID) req.body.userID = 3;
-    if(!req.session.user){ 
-      req.session.anon={}
-      uuid = uuidv1()
-      req.session.anon.id = uuid
-    }
-    else uuid = null;
 
+    if(!req.body.userID) req.body.userID = 3;
+    // May possible add abilit to edit/delete comment for anonymous later on
+    // if(!req.session.user){ 
+    //   req.session.anon={}
+    //   uuid = uuidv1()
+    //   req.session.anon.id = uuid
+    // }
+    // else uuid = null;
    const { userID,slug, comment} = req.body;
 
-    const createCommentQuery = "WITH COMMENT AS (INSERT INTO user_comments(user_id,slug,comment,date,uuid) VALUES ($1,$2,$3,$4,$5) RETURNING *) SELECT comment_id,slug,comment,date,user_details.name,user_details.id FROM COMMENT INNER JOIN user_details on id=user_id;";
-    const parameters = [userID,slug,comment, new Date(),uuid]
+    const createCommentQuery = "WITH COMMENT AS (INSERT INTO user_comments(user_id,slug,comment,date) VALUES ($1,$2,$3,$4) RETURNING *) SELECT comment_id,slug,comment,date,user_details.name,user_details.id FROM COMMENT INNER JOIN user_details on id=user_id;";
+    const parameters = [userID,slug,comment, new Date()]
     
     db.makeQuery(parameters,createCommentQuery)
     .then(resp=>res.json(resp))
@@ -80,9 +78,6 @@ cApp.patch('/:comment_id',(req,res)=>{
   })
   .then(response=>res.status(204).send())
   .catch(err=>console.log(err))
-
-
-
 })
 
 

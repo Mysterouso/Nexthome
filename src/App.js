@@ -3,12 +3,13 @@ import { Route,Switch,Redirect } from "react-router-dom";
 import { Usercontext } from './Context/Usercontext';
 import { fetchServer,defaultUser } from './Utils/Util'
 
+import Viewbox from './Pages/Searchpage/Viewbox'
+import Productpage from './Pages/Productpage/Productpage'
+import Loginpage from './Pages/Login/Loginpage'
+
 import Errorboundary from './Components/Errorboundary';
 import Navigation from './Components/Navigation/Navigation'
-import Viewbox from './Components/Viewbox/Viewbox'
 import Products from './Components/Products/Products'
-import Productpage from './Components/Products/Productpage'
-import Loginpage from './Components/Login/Loginpage'
 
 import './App.css';
 
@@ -21,7 +22,8 @@ class App extends React.Component{
       isLoggedIn:false,
       showNav:true,
       searchField:"",
-      user: defaultUser
+      user: defaultUser,
+      shouldRefresh:false
     }
   }
 
@@ -48,20 +50,15 @@ class App extends React.Component{
   }
 
   handleFetch = (purpose='search',slug='') => {
+
+    let body = JSON.stringify({search:this.state.searchField});
+
+    if(purpose==="get") body = JSON.stringify({slug});
     
-    let fields = `age_ratings,alternative_names,category,collection,cover.*,created_at,dlcs,expansions,external_games,first_release_date,follows,franchise,franchises,game_engines,game_modes,genres,hypes,involved_companies,keywords,multiplayer_modes,name,parent_game,platforms,player_perspectives,popularity,pulse_count,rating,rating_count,release_dates,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,time_to_beat,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites;`;
-    let body = (`search "${this.state.searchField}"; fields ${fields} limit 25;`)
-    const url= "https://cors-anywhere.herokuapp.com/" + "api-v3.igdb.com/games"
-    
-    if(purpose==='get'){
-      body= `fields ${fields} where slug = "${slug}";`
-    }
-    return fetch(url,{
-      method:'POST',
+   return fetch("http://localhost:5000",{
+      method:"POST",
       body,
-      headers: {
-        'user-key': process.env.REACT_APP_API_KEY
-      }
+      headers:{ "Content-Type": "application/json"}
     })
      
   }
@@ -70,13 +67,10 @@ class App extends React.Component{
     e.preventDefault()
      this.handleFetch()
      .then(res=>res.json())
-    .then(products => {
-      this.setState({products});
-      console.log(products);
-  })
-  .catch(err => {
-      console.error(err);
-  });
+    .then(products => this.setState({products}))
+    .catch(err => {
+        console.error(err);
+    });
   }
 
   getProduct = (slug) => {
@@ -100,18 +94,25 @@ class App extends React.Component{
     return arr.filter(product=>product.slug===slug)
     
   }
-
+  
   monitorNav = (newState) => {
     this.setState({showNav:newState})
   }
 
+  updateRefresh = (newState) =>{
+    this.setState({shouldRefresh:newState})
+  }
 
+  updateProducts = (newState) =>{
+    this.setState({products:newState})
+  }
 
     render(){
+      const { shouldRefresh, user } = this.state
       return (
         <div className="App">
 
-          <Usercontext.Provider value={{user:this.state.user,updateUser:this.updateUser,redirectLogin:this.redirectLogin}}>
+          <Usercontext.Provider value={{shouldRefresh,user,updateRefresh:this.updateRefresh,updateUser:this.updateUser,redirectLogin:this.redirectLogin}}>
                               
             {this.state.showNav && <Navigation/>}
            
@@ -119,7 +120,7 @@ class App extends React.Component{
               <Route exact path="/" render={ () =>{
                 return(
                   <React.Fragment>
-                  <Viewbox searchField={this.state.searchField} updateSearch={this.updateSearch} fetchSearch={this.fetchSearch} >
+                  <Viewbox updateProducts={this.updateProducts} searchField={this.state.searchField} updateSearch={this.updateSearch} fetchSearch={this.fetchSearch} >
                     <Errorboundary>
                       { this.state.products.length ? <Products items={this.state.products}/> : '' }
                     </Errorboundary>
@@ -148,11 +149,3 @@ class App extends React.Component{
 }
 
 export default App;
-
-const Home = () =>{
-  const howdy = React.useContext(Usercontext);
-  console.log('Do I work here?', howdy)
-  return(
-    <div>This is Home</div>
-    )
-  }

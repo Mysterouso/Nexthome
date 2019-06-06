@@ -1,5 +1,5 @@
 import React from 'react';
-import Productinfo from './Productinfo';
+import Productinfo from '../../Components/Products/Productinfo';
 
 class Productpage extends React.Component{
 
@@ -16,6 +16,7 @@ class Productpage extends React.Component{
     componentDidMount(){
         const { getProduct, productData, match } = this.props
         const defaultStateChange = {isLoading:false, validItem:true}
+       
         if(!productData.length){
             getProduct(match.params.slug)
             .then(resp=> resp[0] ? resp[0] : {})
