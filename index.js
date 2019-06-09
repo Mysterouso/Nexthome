@@ -26,9 +26,16 @@ const app = express()
 
 app.use(express.static(path.join(__dirname, 'Client', 'build')));
 
-
+process.env.NODE_ENV
 //Middlewares
 app.use(helmet())
+// if(process.env.NODE_ENV === "development") app.use(cors(corsOptions))
+// else{
+//   app.use((req,res,next)=>{
+//     res.setHeader('Access-Control-Allow-Credentials', true)
+//     next()
+//   })
+// }
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(session({ 
