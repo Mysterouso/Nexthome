@@ -66,9 +66,9 @@ class Loginpage extends React.Component{
                                 }
                             }
                         })
-                })
+                    })
                 return;
-            }
+                }
 
             body = JSON.stringify({
                 name: this.state.name,
@@ -127,7 +127,7 @@ class Loginpage extends React.Component{
     }
 
     render(){
-        const {server,email,password} = this.state.error;
+        const {server,password} = this.state.error;
         
         return(
             <div className="login-correction">

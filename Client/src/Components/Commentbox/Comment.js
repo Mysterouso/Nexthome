@@ -7,11 +7,13 @@ const Comment = (props) => {
     const [editFormClass,updateFormClass] = useState('')
     const [editText,updateEditText] = useState('')
     const [isEditVisible,showHideEdit] = useState(false)
+    const [isEdited, editIt] = useState(props.commentInfo.edited)
 
     const { user } = React.useContext(Usercontext);
 
     const {commentInfo,updateComment} = props
-
+    
+    //Parsing date
     commentInfo.date = new Date(commentInfo.date);
     let date = commentInfo.date.toLocaleDateString()
     let time = commentInfo.date.toLocaleTimeString([],{hour: '2-digit', minute:'2-digit'})
@@ -26,7 +28,7 @@ const Comment = (props) => {
             }
         })
     }
-
+    //Updating class of edit box on click
     const updateClass = (e) => {
         updateFormClass(() => editFormClass === '' ? 'commentbox-comment-editbox-active' : '')
         showHideEdit(()=> isEditVisible ? false : true)
@@ -51,6 +53,7 @@ const Comment = (props) => {
         .then(noresponse=>{
             updateClass()
             updateEditText('')
+            editIt(true)
             }
         )   
     }
@@ -71,7 +74,7 @@ const Comment = (props) => {
                             <h5>{name}</h5>
                             <small>{date}</small>
                             <small>{time}</small>
-                            {commentInfo.edited && <small>*</small>}
+                            {isEdited && <small>*</small>}
                         </div>
                         
                         { canChangeComment && (

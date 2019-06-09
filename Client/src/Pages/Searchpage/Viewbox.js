@@ -23,9 +23,9 @@ class Viewbox extends React.Component {
                 <div className="viewbox">
                     <div className="searchbox">
                         <div className="searchbox-container">
-                            <input className="searchbox-search" onChange={updateSearch} type="text" value={searchField} placeholder="Enter your location"/>
+                            <input className="searchbox-search" onChange={updateSearch} type="text" value={searchField} placeholder="Search for game"/>
                         </div>
-                        <input className="searchbox-submit" onClick={fetchSearch} type="submit" />
+                        <input className="searchbox-submit" onClick={fetchSearch} type="submit" value="Search" />
                     </div>
                     {this.props.children}
                 </div>

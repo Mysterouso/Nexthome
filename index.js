@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path');
 const fetch = require('node-fetch')
 const cors = require('cors')
 const bcrypt = require('bcrypt');
@@ -19,7 +20,12 @@ const { fields, url } = require('./Constants/API');
 const corsOptions= require('./Constants/Corsconfig');
 const sessionConfig = require('./Constants/Sessionconfig');
 
+const PORT = process.env.PORT || 5000
+
 const app = express()
+
+app.use(express.static(path.join(__dirname, 'Client', 'build')));
+
 
 //Middlewares
 app.use(helmet())
@@ -32,9 +38,9 @@ app.use(session({
 app.use(morgan('combined'));
 
 // Routes
-app.use('/comments',commentRouter);
+app.use('/api/comments',commentRouter);
 
-app.post('/',(req,res)=>{
+app.post('/api',(req,res)=>{
 
   let body;
 
@@ -53,11 +59,11 @@ app.post('/',(req,res)=>{
   .catch(err=>res.status(400).json(err))
 })
 
-app.post('/signin',(req,res)=>signin(db,bcrypt,req,res))
+app.post('/api/signin',(req,res)=>signin(db,bcrypt,req,res))
 
-app.post('/register',(req,res)=>register(db,bcrypt,req,res))
+app.post('/api/register',(req,res)=>register(db,bcrypt,req,res))
 
-app.get('/session',(req,res)=>{
+app.get('/api/session',(req,res)=>{
   
   if( !req.session.user || !Object.keys(req.session.user).length ) return res.json({isLoggedIn:false});
   
@@ -77,7 +83,7 @@ app.get('/session',(req,res)=>{
   
 })
 
-app.get('/logout',(req,res)=>{
+app.get('/api/logout',(req,res)=>{
   
   req.session.destroy((err)=>{
     if(err){
@@ -88,9 +94,14 @@ app.get('/logout',(req,res)=>{
   })
 
 })
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname,'Client','build', 'index.html'));
+});
+
   
-app.listen(5000,()=>{
-  console.log('Listening on port 5000')
+app.listen(PORT,()=>{
+  console.log(`Listening on port ${PORT}`)
   createSchema().catch(e=>console.error(e.stack))
 })
 

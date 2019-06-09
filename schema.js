@@ -14,7 +14,7 @@ const mockUsers = [
     [ 'Anonymous', 'blank@email.com', 'BLANK' ]
 ]
 
-const insertQuery = `INSERT INTO user_details(name,email,password,created_at) VALUES ($1,$2,$3,$10),($4,$5,$6,$10),($7,$8,$9,$10);`
+const insertQuery = `INSERT INTO user_details(name,email,password,created_at) VALUES ($1,$2,$3,$10),($4,$5,$6,$10),($7,$8,$9,$10) ON CONFLICT DO NOTHING;`
 const parameters = [...mockUsers[0],...mockUsers[1],...mockUsers[2], new Date()]
 
 const createSchema = async () => {
@@ -30,10 +30,9 @@ const createSchema = async () => {
         await client.query(user_commentsSchema)
 
         //INSERTING MOCK VALUES
-        await client.query('BEGIN')
         await client.query(insertQuery,parameters)
         await client.query('COMMIT')
-        await client.query('COMMIT')
+        
     }
     catch(e){
         await client.query('ROLLBACK')

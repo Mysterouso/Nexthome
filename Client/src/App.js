@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route,Switch,Redirect } from "react-router-dom";
 import { Usercontext } from './Context/Usercontext';
-import { fetchServer,defaultUser } from './Utils/Util'
+import { fetchServer,defaultUser,serverURL } from './Utils/Util'
 
 import Viewbox from './Pages/Searchpage/Viewbox'
 import Productpage from './Pages/Productpage/Productpage'
@@ -55,7 +55,7 @@ class App extends React.Component{
 
     if(purpose==="get") body = JSON.stringify({slug});
     
-   return fetch("http://localhost:5000",{
+   return fetch(`${serverURL}/api`,{
       method:"POST",
       body,
       headers:{ "Content-Type": "application/json"}

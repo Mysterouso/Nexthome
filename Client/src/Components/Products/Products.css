@@ -1,16 +1,16 @@
 
 .product{
-    width:80%;
+    width:76%;
     margin:0 auto;
     text-align:center;
     /* border-top: solid 2px rgba(0,0,0,0.125); */
     border-bottom: solid 2px rgba(0,0,0,0.125);
   }
   
-  .product-top a h2{
-    margin-left:1rem;
-    text-align:left;
-  }
+.product-top a h2{
+  margin-left:1rem;
+  text-align:left;
+}
 
 .product-image{
   display:flex;
@@ -68,5 +68,11 @@
   .product-image img{
       float:left;
       padding: 0 0.45em 0 1em;
+  }
+}
+
+@media only screen and (min-width:1366px){
+  .product{
+    width:60%;
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import Comment from './Comment'
 import { Usercontext } from '../../Context/Usercontext';
+import { serverURL } from '../../Utils/Util'
 
 class Commentbox extends React.Component{
 
@@ -15,7 +16,7 @@ class Commentbox extends React.Component{
 
     componentDidMount(){
 
-        fetch(`http://localhost:5000/comments/${this.props.slug}`)
+        fetch(`${serverURL}/api/comments/${this.props.slug}`)
         .then(res=>res.json())
         .then(comments=>this.setState({users:[...comments],isLoaded:true}))
         .catch(err=>console.log(err))
@@ -30,7 +31,7 @@ class Commentbox extends React.Component{
         const newComment = {userID:user.id,comment,slug:this.props.slug}
        
 
-        fetch('http://localhost:5000/comments',{
+        fetch(`${serverURL}/api/comments`,{
             method:'POST',
             headers: { "Content-Type": "application/json" },
             body:JSON.stringify(newComment)
@@ -51,13 +52,13 @@ class Commentbox extends React.Component{
     updateComment = (comment_id,comment, date) => {
         if(!comment){
             this.setState(prevState=>{
-                return {users: prevState.users.filter(user=> user.comment_id != comment_id)}
+                return {users: prevState.users.filter(user=> user.comment_id !== comment_id)}
             })
         }
         else{
             this.setState(prevState=>{
                 const editIndex = prevState.users.findIndex(user => user.comment_id === comment_id)
-                const omittedArr = prevState.users.filter(user=> user.comment_id != comment_id)
+                const omittedArr = prevState.users.filter(user=> user.comment_id !== comment_id)
                 return { users: 
                             [{...prevState.users[editIndex],comment,date},...omittedArr]
                          }

@@ -78,7 +78,7 @@
     width:60%;
     height:32px;
 }
-.searchbox-container > input {
+.searchbox-search {
     height:100%;
     font-family: 'Montserrat',sans-serif;
     font-size:1.2rem;
@@ -116,9 +116,6 @@
 .checkbox-container span{
     position:absolute;
     box-sizing:border-box;
-
-
-
     text-align:center;
     font-size:1.25rem;
     color:white;
@@ -133,10 +130,31 @@
     border:4px solid black;
     border-bottom:none; */
 }
-
+@media only screen and (max-width:620px){
+    .main{
+        min-height:90vh;
+    }
+    .searchbox{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }   
+    .searchbox-search{
+        font-size:1rem;
+    }
+    .searchbox-submit{
+        width:36%;
+        height:24px;
+        border-radius: 12px;
+        margin-top:0.5rem;
+    }
+}
 @media only screen and (max-width:425px){
     .viewbox{
         width:96%;
+    }
+    .searchbox-search{
+        font-size:0.75rem;
     }
 }
 

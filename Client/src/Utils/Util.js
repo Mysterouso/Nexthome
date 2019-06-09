@@ -8,22 +8,24 @@ export const changeImageSize = (arr,string,search=regex) => {
 
 export const dateInMonthYear = (unixDate) => new Date(unixDate*1000).toLocaleDateString([],{year:'numeric',month:'long'})
 
+export const serverURL = process.env.NODE_ENV === "development" ? 'http://localhost:5000' : ''
+
 export const fetchServer = (path,body,method,isJson) => {
 
     const fetchOptions = {
                             method,
                             credentials:'include',
-                            headers: { "Content-Type": "application/json" }                    
-                            }
+                            headers: { "Content-Type": "application/json"}                   
+                        }
     
     if(body) fetchOptions.body = body;
 
     if(method==="DELETE" || isJson === false){
-        return fetch(`http://localhost:5000${path}`,fetchOptions)
+        return fetch(`${serverURL}/api${path}`,fetchOptions)
     } 
     else{
 
-        return fetch(`http://localhost:5000${path}`,fetchOptions)
+        return fetch(`${serverURL}/api${path}`,fetchOptions)
                    .then(resp=>resp.json())
     }
 
