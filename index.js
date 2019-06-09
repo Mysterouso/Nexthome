@@ -20,22 +20,12 @@ const { fields, url } = require('./Constants/API');
 const corsOptions= require('./Constants/Corsconfig');
 const sessionConfig = require('./Constants/Sessionconfig');
 
-const PORT = process.env.PORT || 5000
+const environment = process.env.NODE_ENV || 'development';
 
 const app = express()
 
-app.use(express.static(path.join(__dirname, 'Client', 'build')));
-
-process.env.NODE_ENV
 //Middlewares
 app.use(helmet())
-// if(process.env.NODE_ENV === "development") app.use(cors(corsOptions))
-// else{
-//   app.use((req,res,next)=>{
-//     res.setHeader('Access-Control-Allow-Credentials', true)
-//     next()
-//   })
-// }
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(session({ 
@@ -102,9 +92,15 @@ app.get('/api/logout',(req,res)=>{
 
 })
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname,'Client','build', 'index.html'));
-});
+const PORT = process.env.PORT || 5000
+
+if(environment !== "development"){
+  app.use(express.static(path.join(__dirname, 'Client', 'build')));
+
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname,'Client','build', 'index.html'));
+  });
+}
 
   
 app.listen(PORT,()=>{
