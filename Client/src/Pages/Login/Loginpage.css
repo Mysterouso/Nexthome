@@ -228,3 +228,15 @@
     }
 
 }
+
+@media only screen and (max-height:680px){
+    .login{
+        top:42%;
+    }
+}
+
+@media only screen and (max-height:640px){
+    .login{
+        top:38%;
+    }
+}

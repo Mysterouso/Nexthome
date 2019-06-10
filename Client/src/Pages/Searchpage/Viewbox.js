@@ -16,6 +16,9 @@ class Viewbox extends React.Component {
     const { searchField,updateSearch,fetchSearch } = this.props
     return (
         <div className="main-container">
+            <div className="main-header-image">
+                <h1 className="main-header">Metadata for your favourite games</h1>
+            </div>
             <div className="main">
                 {/* <div className="options">
                 
@@ -23,7 +26,7 @@ class Viewbox extends React.Component {
                 <div className="viewbox">
                     <div className="searchbox">
                         <div className="searchbox-container">
-                            <input className="searchbox-search" onChange={updateSearch} type="text" value={searchField} placeholder="Search for game"/>
+                            <input className="searchbox-search" onChange={updateSearch} type="text" value={searchField} placeholder="Search..."/>
                         </div>
                         <input className="searchbox-submit" onClick={fetchSearch} type="submit" value="Search" />
                     </div>

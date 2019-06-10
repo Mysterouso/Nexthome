@@ -15,6 +15,8 @@ const commentRouter = require('./Routes/Comments')
 
 const signin = require('./Routefunctions/signin')
 const register = require('./Routefunctions/register')
+const renewSession = require('./Routefunctions/session')
+const logout = require('./Routefunctions/logout')
 
 const { fields, url } = require('./Constants/API');
 const corsOptions= require('./Constants/Corsconfig');
@@ -34,9 +36,11 @@ app.use(session({
 }))
 app.use(morgan('combined'));
 
-// Routes
+// Routed routes
 app.use('/api/comments',commentRouter);
 
+
+//Routes
 app.post('/api',(req,res)=>{
 
   let body;
@@ -60,37 +64,9 @@ app.post('/api/signin',(req,res)=>signin(db,bcrypt,req,res))
 
 app.post('/api/register',(req,res)=>register(db,bcrypt,req,res))
 
-app.get('/api/session',(req,res)=>{
-  
-  if( !req.session.user || !Object.keys(req.session.user).length ) return res.json({isLoggedIn:false});
-  
-  const findEmailQuery = "SELECT * FROM user_details WHERE id = $1;";
+app.get('/api/session',(req,res)=>renewSession(db,req,res))
 
-  db.makeQuery([req.session.user.id],findEmailQuery)
-  .then(item=>{ 
-      res.json({
-        isLoggedIn:true,
-        user:{
-          id:item[0].id, 
-          name:item[0].name, 
-          email:item[0].email
-        }
-      });
-  })
-  
-})
-
-app.get('/api/logout',(req,res)=>{
-  
-  req.session.destroy((err)=>{
-    if(err){
-      console.log(err);
-      return res.json({loggedOut:false});
-    }
-    res.json({loggedOut:true})
-  })
-
-})
+app.get('/api/logout',(req,res)=>logout(req,res))
 
 const PORT = process.env.PORT || 5000
 

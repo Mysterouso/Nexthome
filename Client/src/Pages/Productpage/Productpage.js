@@ -49,11 +49,11 @@ class Productpage extends React.Component{
     render(){
         return(
         <div>
-           { this.state.isLoading ? <h1 className="Loading-page">Loading</h1> : this.state.validItem ? (
+           { this.state.isLoading ? <div className="Loading-page"><h1 className="Loading">Loading<span></span></h1></div> : this.state.validItem ? (
             <React.Fragment>
                 <Productinfo slug={this.props.match.params.slug} info={this.state.product}/>
             </React.Fragment>
-            ) :  <h1 className="Not-found">ERROR PAGE NOT FOUND</h1>
+            ) :  <h1 className="Not-found">404 PAGE NOT FOUND <span>Something's not right here</span></h1>
             }
         </div>)
     
