@@ -41,8 +41,11 @@ function headers(req,res,next){
   next()
 }
 
-app.use(headers)
+// app.use(headers)
 
+app.options('/*',(req,res)=>{
+  console.log("THESE ARE THE OPTIONS HEADERS ", req.headers)
+})
 app.options('/*',cors(corsOptions))
 // Routed routes
 app.use('/api/comments',commentRouter);

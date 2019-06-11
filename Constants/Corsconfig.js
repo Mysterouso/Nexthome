@@ -6,8 +6,8 @@ var whitelist = [process.env.REACT_CLIENT_URL]
 var corsOptions = {
   credentials:true,
   methods:["GET", "PUT", "POST", "DELETE","PATCH"],
-  // allowedHeaders:["Origin", "X-Requested-With", "Content-Type", "Accept","Range","Authorization","Accept-Language","Accept-Encoding"],
-  // maxAge:-1,
+  allowedHeaders:["origin", "x-requested-with", "content-type", "accept","range","authorization","accept-language","accept-encoding","cache-control","x-request-id","x-forwarded-for","x-forwarded-proto","x-forwarded-port"],
+  maxAge:-1,
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true)
