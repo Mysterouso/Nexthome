@@ -10,6 +10,8 @@ export const dateInMonthYear = (unixDate) => new Date(unixDate*1000).toLocaleDat
 
 export const serverURL = process.env.NODE_ENV === "development" ? 'http://localhost:5000' : ''
 
+// export const serverURL = process.env.NODE_ENV === "development" ? 'https://nextgame-app.herokuapp.com' : ''
+
 export const fetchServer = (path,body,method,isJson) => {
 
     const fetchOptions = {
