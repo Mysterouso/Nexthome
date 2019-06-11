@@ -43,6 +43,7 @@ function headers(req,res,next){
 
 app.use(headers)
 
+app.options('/*',cors(corsOptions))
 // Routed routes
 app.use('/api/comments',commentRouter);
 
