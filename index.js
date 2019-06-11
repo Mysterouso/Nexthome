@@ -27,6 +27,9 @@ const environment = process.env.NODE_ENV || 'development';
 const app = express()
 
 //Middlewares
+app.options('/*',(req,res)=>{
+  console.log("THESE ARE THE OPTIONS HEADERS ", req.headers)
+})
 app.use(helmet())
 app.use(cors(corsOptions))
 app.use(express.json())
@@ -41,12 +44,9 @@ function headers(req,res,next){
   next()
 }
 
-// app.use(headers)
 
-app.options('/*',(req,res)=>{
-  console.log("THESE ARE THE OPTIONS HEADERS ", req.headers)
-})
-app.options('/*',cors(corsOptions))
+
+
 // Routed routes
 app.use('/api/comments',commentRouter);
 
