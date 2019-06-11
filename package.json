@@ -7,7 +7,8 @@
     "start": "node index.js",
     "heroku-postbuild": "cd Client && npm install && npm run build",
     "dev": "nodemon index.js",
-    "app": "concurrently \"node index.js\" \" cd Client && npm start\" "
+    "app": "concurrently \"nodemon index.js\" \" cd Client && npm start\" ",
+    "setup": "npm install && cd Client && npm install"
   },
   "author": "Zee",
   "license": "ISC",
