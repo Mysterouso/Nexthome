@@ -40,17 +40,8 @@ app.use(session({
 }))
 app.use(morgan('combined'));
 
-function headers(req,res,next){
-  console.log('THESE ARE THE HEADERS ',req.headers)
-  next()
-}
-
-
-
-
 // Routed routes
 app.use('/api/comments',commentRouter);
-
 
 //Routes
 app.post('/api',(req,res)=>{
