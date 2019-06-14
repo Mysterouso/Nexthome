@@ -36,11 +36,13 @@
   /* align-self: flex-start; */
   /* margin-top:8px; */
   padding: 0 1rem;
+  margin-right:auto;
 }
 
 .product-image p{
   padding: 0 1rem 0 0.5rem;
   margin:0;
+  margin-right:auto;
   text-align:left;
   line-height:1.5;
 }
@@ -88,6 +90,7 @@
   }
   .product-bottom{
     clear:both;
+    display:inline-block;
   }
 }
 

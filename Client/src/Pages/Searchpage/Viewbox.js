@@ -13,7 +13,7 @@ class Viewbox extends React.Component {
     }
     
     render(){
-    const { searchField,updateSearch,fetchSearch } = this.props
+    const { searchField, isDisabled, updateSearch, fetchSearch } = this.props
     return (
         <div className="main-container">
             <div className="main-header-image">
@@ -24,13 +24,14 @@ class Viewbox extends React.Component {
                 
                 </div> */}
                 <div className="viewbox">
-                    <div className="searchbox">
+                    <form className="searchbox" onSubmit={fetchSearch}>
                         <div className="searchbox-container">
                             <input className="searchbox-search" onChange={updateSearch} type="text" value={searchField} placeholder="Search..."/>
                         </div>
-                        <input className="searchbox-submit" onClick={fetchSearch} type="submit" value="Search" />
-                    </div>
-                    {this.props.children}
+                       
+                        <input className="searchbox-submit" type="submit" disabled={isDisabled} value="Search" />
+                    </form>
+                    {isDisabled ? <div className="spinner"></div> : this.props.children }
                 </div>
             </div>
         </div>

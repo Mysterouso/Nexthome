@@ -18,6 +18,7 @@ class App extends React.Component{
   constructor(){
     super();
     this.state={
+      isDisabled: false,
       products:[],
       isLoggedIn:false,
       showNav:true,
@@ -65,10 +66,12 @@ class App extends React.Component{
     
   fetchSearch = (e) => {
     e.preventDefault()
+    this.setState({isDisabled:true})
      this.handleFetch()
      .then(res=>res.json())
-    .then(products => this.setState({products}))
+    .then(products => this.setState({isDisabled:false,products}))
     .catch(err => {
+        this.setState({isDisabled:false})
         console.error(err);
     });
   }
@@ -120,7 +123,7 @@ class App extends React.Component{
               <Route exact path="/" render={ () =>{
                 return(
                   <React.Fragment>
-                  <Viewbox updateProducts={this.updateProducts} searchField={this.state.searchField} updateSearch={this.updateSearch} fetchSearch={this.fetchSearch} >
+                  <Viewbox updateProducts={this.updateProducts} {...this.state} updateSearch={this.updateSearch} fetchSearch={this.fetchSearch} >
                     <Errorboundary>
                       { this.state.products.length ? <Products items={this.state.products}/> : '' }
                     </Errorboundary>
