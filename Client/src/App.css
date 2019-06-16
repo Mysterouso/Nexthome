@@ -1,4 +1,6 @@
 
+@import-normalize;
+
 :root{
   --loading-bar:0%;
 }

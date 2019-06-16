@@ -52,7 +52,7 @@
   width:100%;
   margin-top:1rem;
   margin-left:1rem;
-  padding:0.5rem 0 1;
+  padding:0.5rem 0 0.1rem;
 }
 
 .product-bottom h4{
@@ -68,8 +68,9 @@
   .product{
     width:100%;
   }
-  .proudct-top a{
+  .product-top a{
     display:block;
+    margin-left:0.5rem;
   }
   .product-top a h2{
     font-size:1.2em;
@@ -79,6 +80,7 @@
   }
   .product-image p{
       float:none;
+      /* box-sizing:border-box; */
   }
   .product-image p span{
       float:inherit;
@@ -86,16 +88,26 @@
   }
   .product-image img{
       float:left;
-      padding: 0 0.45em 0 1em;
+      padding: 0 0.45em 0 0.5rem;
   }
   .product-bottom{
+    margin-left:0.5rem;
+    margin-top:0.5rem;
     clear:both;
     display:inline-block;
+    width:70%;
   }
+  
 }
 
 @media only screen and (min-width:1366px){
   .product{
     width:60%;
+  }
+}
+
+@media only screen and (max-width:375px){
+  .proudct-image p span{
+    word-wrap:normal;
   }
 }
