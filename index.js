@@ -27,10 +27,6 @@ const environment = process.env.NODE_ENV || 'development';
 const app = express()
 
 //Middlewares
-app.use('/*',(req,res,next)=>{
-  console.log("THESE ARE THE OPTIONS HEADERS ", req.headers)
-  next()
-})
 app.use(helmet())
 app.use(cors(corsOptions))
 app.use(express.json())

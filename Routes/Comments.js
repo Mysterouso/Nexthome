@@ -2,8 +2,8 @@ const express = require('express')
 const db = require('../db')
 
 
-
 const cApp = express.Router()
+
 
 cApp.get('/:slug',(req,res)=>{
     
@@ -16,8 +16,17 @@ cApp.get('/:slug',(req,res)=>{
   
 cApp.post('/', (req,res)=>{
 
-    if(!req.body.userID) req.body.userID = 3;
-    // May possible add abilit to edit/delete comment for anonymous later on
+    if(!req.body.userID){ 
+      req.body.userID = 3
+    }
+    else if(req.session.user){
+      const { id } = req.session.user
+      if(!id===req.body.userID){
+        res.status(401).send()
+        return
+      }
+    }
+    // May possible add ability to edit/delete comment for anonymous later on
     // if(!req.session.user){ 
     //   req.session.anon={}
     //   uuid = uuidv1()
@@ -36,6 +45,7 @@ cApp.post('/', (req,res)=>{
 cApp.delete('/:comment_id',(req,res)=>{
   const comment_id = req.params.comment_id
   const { id, secret_id } = req.session.user
+
 
   const checkMatchQuery = "SELECT * FROM user_comments INNER JOIN user_details on user_id = id WHERE comment_id = $1 ORDER BY DATE DESC;"
   const deleteCommentQuery = "DELETE FROM user_comments WHERE comment_id = $1"
@@ -58,8 +68,8 @@ cApp.delete('/:comment_id',(req,res)=>{
 cApp.patch('/:comment_id',(req,res)=>{
   
   const comment_id = req.params.comment_id;
+  const { id, secret_id } = req.session.user
   const { comment,date } = req.body;
-  const { id, secret_id } = req.session.user;
 
   const checkMatchQuery = "SELECT * FROM user_comments INNER JOIN user_details on user_id = id WHERE comment_id = $1 ORDER BY DATE DESC;"
   const parameters = [comment_id]

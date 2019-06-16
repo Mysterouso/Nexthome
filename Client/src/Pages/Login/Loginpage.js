@@ -15,7 +15,7 @@ const initialErrorState = {
     },
     password:{
         isError: false,
-        errorMessage:'Passwords don\'t match',
+        errorMessage:'',
     }
 }
 
@@ -41,6 +41,39 @@ class Loginpage extends React.Component{
         this.props.monitorNav(true);
     }
 
+    errState = (errObj) => {
+        this.setState((prevState)=>{
+            return({
+                        error:{...prevState.error,
+                            ...errObj
+                        }
+                    })
+                })
+        }
+
+    validateMatch = (e) =>{
+
+        if(this.state.password !== this.state.repeatPassword && this.state.repeatPassword){
+            this.errState({password:{
+                isError:true,
+                errorMessage:"Passwords don't match"
+            }
+        })
+        }
+        else if(this.state.password.length>=6) this.setState({error:initialErrorState})
+        
+    }
+
+    validateLength = (e) =>{
+        if(this.state.password.length < 6 && this.state.password){
+            this.errState({password:{
+                isError:true,
+                errorMessage:"Password must be 6 or more characters"
+            }})
+        }
+        else this.setState({error:initialErrorState})
+    }
+
     handleSubmit = (e) =>{
         e.preventDefault()
         this.setState({error:initialErrorState})
@@ -56,20 +89,6 @@ class Loginpage extends React.Component{
             path='/signin'
         }
         else{
-            if(this.state.password !== this.state.repeatPassword){
-                this.setState((prevState)=>{
-                   return({
-                            error:{...prevState.error,
-                                password:{
-                                    isError:true,
-                                    errorMessage:"Passwords don't match"
-                                }
-                            }
-                        })
-                    })
-                return;
-                }
-
             body = JSON.stringify({
                 name: this.state.name,
                 email:this.state.email,
@@ -160,21 +179,22 @@ class Loginpage extends React.Component{
                                 
                                 {this.state.isRegister && (
                                      <Loginpageinput inputName="name" inputType="text" inputTitle="Name" handleInput={this.handleInput}
-                                      value={this.state.name} />
+                                      value={this.state.name} key="name" />
                                     )}
 
                                 <Loginpageinput inputName="email" inputType="email" inputTitle="Email" handleInput={this.handleInput}
-                                    value={this.state.email} />
+                                    value={this.state.email} key="email" />
                         
                                 <Loginpageinput inputName="password" inputType="password" inputTitle="Password" handleInput={this.handleInput}
-                                    value={this.state.password} >
-                                 {password.isError && <span className="error-message">Passwords don't match</span>}
+                                    value={this.state.password} key="password">
+                                 {password.isError && <span className="error-message error-password">{password.errorMessage}</span>}
                                 </Loginpageinput>
                             
 
                                 {this.state.isRegister && (
                                       <Loginpageinput inputName="repeatPassword" inputType="password" inputTitle="Confirm your password" handleInput={this.handleInput}
-                                      value={this.state.repeatPassword} />
+                                      value={this.state.repeatPassword} key="repeatPassword"
+                                      blur={this.validateMatch} focus={this.validateLength}/>
                                     )}
 
                                 <input className="login-submit" type="submit" value={this.state.isLogin ? 'Login' : 'Register'}></input>
